@@ -1,5 +1,6 @@
 #pragma once
 #include "DBhandler.h"
+#include "CDateTime.h"
 #include<vector>
 /*  1.	Date(calendar selection type.)
       2.	Equipment name / tag(to be selected from drop down menu)
@@ -21,6 +22,8 @@ struct dataobject {
     std::string equipdes;
     std::string norunreason;
     std::string timedesc;
+    CDateTime starttime;
+    CDateTime stoptime;
     std::string timedeschh;
     std::string timedescmm;
     std::string timedescss;
@@ -31,13 +34,15 @@ struct dataobject {
     std::string attendeename;
     std::string responsibility;
     std::string remarks;
+    std::string created_by;
+    std::string updated_by;
 };
 
 class dataModel :
     public DBhandler
 {
     private:
-        std::string tablename = "maindata_new1";
+        std::string tablename = "maindata_new2";
     public:
         dataModel();
         bool insertdata(dataobject&);

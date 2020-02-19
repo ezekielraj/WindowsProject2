@@ -154,7 +154,7 @@ void inputpage::CreatePage() {
         //340
         //370
 
-        pageentries[9] = CreateWindowA("STATIC",
+        /*pageentries[9] = CreateWindowA("STATIC",
             "Delay or Down Time\n HH      : MM     : SS",
             WS_VISIBLE | WS_CHILD,
             260, 330, 150, 34,
@@ -188,11 +188,53 @@ void inputpage::CreatePage() {
             WS_CHILD | WS_VISIBLE,
             364, 360, 46, 25,
             iphwnd, NULL, NULL, NULL);
+            */
+
+        pageentries[9] = CreateWindowA("STATIC",
+            " Delay or DownTime\n Start Date Time",
+            WS_VISIBLE | WS_CHILD,
+            450, 60, 150, 34,
+            iphwnd,
+            NULL, NULL, NULL
+        );
+
+
+        pageentries[10] = CreateWindowW(L"SysDateTimePick32", NULL,
+
+            WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP,
+
+            450, 114, 150, 30, iphwnd, NULL, NULL, NULL);
+        pageentries[11] = CreateWindowW(L"SysDateTimePick32", NULL,
+
+            WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP | DTS_TIMEFORMAT,
+
+            450, 148, 150, 30, iphwnd, NULL, NULL, NULL);
+
+        pageentries[12] = CreateWindowA("STATIC",
+            " Delay or DownTime\n Stop Date Time",
+            WS_VISIBLE | WS_CHILD,
+            450, 182, 150, 34,
+            iphwnd,
+            NULL, NULL, NULL
+        );
+
+
+        pageentries[13] = CreateWindowW(L"SysDateTimePick32", NULL,
+
+            WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP,
+
+            450, 220, 150, 30, iphwnd, NULL, NULL, NULL);
+        pageentries[14] = CreateWindowW(L"SysDateTimePick32", NULL,
+
+            WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP | DTS_TIMEFORMAT,
+
+            450, 254, 150, 30, iphwnd, NULL, NULL, NULL);
+
 
         pageentries[15] = CreateWindowA("STATIC",
             "Description (fault/mainenance)",
             WS_VISIBLE | WS_CHILD ,
-            450, 60, 150, 34,
+            640, 60, 150, 34,
             iphwnd,
             NULL, NULL, NULL
         );
@@ -200,7 +242,7 @@ void inputpage::CreatePage() {
         pageentries[16] = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(""),
             WS_CHILD | WS_VISIBLE | WS_VSCROLL |
             ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL, 
-            450, 98, 150, 100,
+            640, 98, 150, 100,
             iphwnd, NULL, NULL, NULL);
 
         //ShowWindow(pageentries[15], SW_HIDE);
@@ -208,7 +250,7 @@ void inputpage::CreatePage() {
         pageentries[23] = CreateWindowA("STATIC",
             "Corrective Action Taken",
             WS_VISIBLE | WS_CHILD,
-            450, 203, 150, 30,
+            640, 203, 150, 30,
             iphwnd,
             NULL, NULL, NULL
         );
@@ -216,14 +258,14 @@ void inputpage::CreatePage() {
         pageentries[24] = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(""),
             WS_CHILD | WS_VISIBLE | WS_VSCROLL |
             ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL,
-            450, 238, 150, 100,
+            640, 238, 150, 100,
             iphwnd, NULL, NULL, NULL);
 
 
         pageentries[17] = CreateWindowA("STATIC",
             "Process (CLIENT SCOPE)",
             WS_VISIBLE | WS_CHILD,
-            640, 60, 150, 34,
+            830, 60, 150, 34,
             iphwnd,
             NULL, NULL, NULL
         );
@@ -231,14 +273,14 @@ void inputpage::CreatePage() {
         pageentries[18] = CreateWindowA("ComboBox", "",
             CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE | WS_VSCROLL | CBS_AUTOHSCROLL |
             ES_LEFT | WS_HSCROLL,
-            640, 99, 150, 200, iphwnd, (HMENU)CMBOX4, NULL,
+            830, 99, 150, 200, iphwnd, (HMENU)CMBOX4, NULL,
             NULL);
 
 
         pageentries[19] = CreateWindowA("STATIC",
             "Effect on Process (Individual process stop / Wind volume reduction / NA)",
             WS_VISIBLE | WS_CHILD,
-            640, 129, 150, 68,
+            830, 129, 150, 68,
             iphwnd,
             NULL, NULL, NULL
         );
@@ -246,7 +288,7 @@ void inputpage::CreatePage() {
         pageentries[20] = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(""),
             WS_CHILD | WS_VISIBLE | WS_VSCROLL |
             ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL,
-            640, 202, 150, 100,
+            830, 202, 150, 100,
             iphwnd, NULL, NULL, NULL);
 
         pageentries[21] = CreateWindowA("STATIC",
@@ -302,7 +344,7 @@ void inputpage::CreatePage() {
         pageentries[30] = CreateWindowA("STATIC",
             "Responsibility:",
             WS_VISIBLE | WS_CHILD,
-            640, 307, 150, 25,
+            830, 307, 150, 25,
             iphwnd,
             NULL, NULL, NULL
         );
@@ -310,7 +352,7 @@ void inputpage::CreatePage() {
         pageentries[31] = CreateWindowA("ComboBox", "",
             CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE | WS_VSCROLL | CBS_AUTOHSCROLL |
             ES_LEFT | WS_HSCROLL,
-            640, 337, 150, 200, iphwnd, (HMENU)CMBOX7, NULL,
+            830, 337, 150, 200, iphwnd, (HMENU)CMBOX7, NULL,
             NULL);
 
         pageentries[32] = CreateWindowA("STATIC",
@@ -718,6 +760,10 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
                 std::string strtimedetail(wstimedetail.begin(), wstimedetail.end());
                 dao.timedesc = strtimedetail;
 
+
+
+                
+                CDateTime sttime;
                 int tdhhlen = GetWindowTextLengthW(pageentries[10])+1;
                 if (tdhhlen > 1) {
                     wchar_t* tdhhval = new wchar_t[tdhhlen];
@@ -725,15 +771,168 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
 
                     std::wstring wstdhhval(tdhhval);
                     std::string strtdhhval(wstdhhval.begin(), wstdhhval.end());
-                    dao.timedeschh = strtdhhval;
-                    //                MessageBox(iphwnd, dateval, L"", MB_OK);
-                }
-                else {
-                    dao.timedeschh = "00";    //return;               
+                    
+                    std::string delimiter = "/";
+                    size_t pos = 0;
+                    std::string token;
+                    pos = strtdhhval.find(delimiter);
+                    token = strtdhhval.substr(0, pos);
+                    //            std::cout << token << std::endl;
+                    sttime.month = stoi(token);
+                    strtdhhval.erase(0, pos + delimiter.length());
 
+                    pos = strtdhhval.find(delimiter);
+                    token = strtdhhval.substr(0, pos);
+                    sttime.day = stoi(token);
+                    std::cout << token << std::endl;
+                    strtdhhval.erase(0, pos + delimiter.length());
+
+                    sttime.year = stoi(strtdhhval);
+
+                             //       MessageBox(iphwnd, tdhhval, L"", MB_OK);
                 }
             
+                int tdholen = GetWindowTextLengthW(pageentries[11]) + 1;
+                if (tdholen > 1) {
+                    wchar_t* tdhoval = new wchar_t[tdholen];
+                    GetWindowTextW(pageentries[11], tdhoval, tdholen);
+                    
+                    std::wstring wstdhoval(tdhoval);
+                    std::string strtdhoval(wstdhoval.begin(), wstdhoval.end());
 
+                    std::string delimiter = " ";
+                    size_t pos = 0;
+                    std::string token;
+                    pos = strtdhoval.find(delimiter);
+                    token = strtdhoval.substr(0, pos);
+                    //            std::cout << token << std::endl;
+                    std::string ctime = token;
+                    
+                    strtdhoval.erase(0, pos + delimiter.length());
+
+                    std::string meri = strtdhoval;
+
+                    std::string delim = ":";
+                    pos = 0;
+                    pos = ctime.find(delim);
+                    token = ctime.substr(0, pos);
+
+                    sttime.hour = stoi(token);
+                    if (meri.compare("PM")) {
+                        if (sttime.hour == 12) {
+                            sttime.hour = 0;
+                        }
+                    }
+                    if (meri.compare("AM")) {
+                        if (sttime.hour == 12) {
+                            sttime.hour = 12;
+                        }
+                        else {
+                            sttime.hour = sttime.hour + 12;
+                        }
+                    }
+                    ctime.erase(0, pos + delim.length());
+
+                    pos = ctime.find(delim);
+                    token = ctime.substr(0, pos);
+                    sttime.minute = stoi(token);
+                    ctime.erase(0, pos + delimiter.length());
+
+                    sttime.second = stoi(ctime);
+
+
+
+                           //MessageBox(iphwnd, tdhoval, L"", MB_OK);
+                }
+
+                dao.starttime = sttime;
+
+                CDateTime sptime;
+                
+                {
+                int tdhhlen = GetWindowTextLengthW(pageentries[13]) + 1;
+                if (tdhhlen > 1) {
+                    wchar_t* tdhhval = new wchar_t[tdhhlen];
+                    GetWindowTextW(pageentries[13], tdhhval, tdhhlen);
+
+                    std::wstring wstdhhval(tdhhval);
+                    std::string strtdhhval(wstdhhval.begin(), wstdhhval.end());
+
+                    std::string delimiter = "/";
+                    size_t pos = 0;
+                    std::string token;
+                    pos = strtdhhval.find(delimiter);
+                    token = strtdhhval.substr(0, pos);
+                    //            std::cout << token << std::endl;
+                    sptime.month = stoi(token);
+                    strtdhhval.erase(0, pos + delimiter.length());
+
+                    pos = strtdhhval.find(delimiter);
+                    token = strtdhhval.substr(0, pos);
+                    sptime.day = stoi(token);
+                    std::cout << token << std::endl;
+                    strtdhhval.erase(0, pos + delimiter.length());
+
+                    sptime.year = stoi(strtdhhval);
+
+                    //       MessageBox(iphwnd, tdhhval, L"", MB_OK);
+                }
+
+                int tdholen = GetWindowTextLengthW(pageentries[14]) + 1;
+                if (tdholen > 1) {
+                    wchar_t* tdhoval = new wchar_t[tdholen];
+                    GetWindowTextW(pageentries[14], tdhoval, tdholen);
+
+                    std::wstring wstdhoval(tdhoval);
+                    std::string strtdhoval(wstdhoval.begin(), wstdhoval.end());
+
+                    std::string delimiter = " ";
+                    size_t pos = 0;
+                    std::string token;
+                    pos = strtdhoval.find(delimiter);
+                    token = strtdhoval.substr(0, pos);
+                    //            std::cout << token << std::endl;
+                    std::string ctime = token;
+
+                    strtdhoval.erase(0, pos + delimiter.length());
+
+                    std::string meri = strtdhoval;
+
+                    std::string delim = ":";
+                    pos = 0;
+                    pos = ctime.find(delim);
+                    token = ctime.substr(0, pos);
+
+                    sptime.hour = stoi(token);
+                    if (meri.compare("PM")) {
+                        if (sptime.hour == 12) {
+                            sptime.hour = 0;
+                        }
+                    }
+                    if (meri.compare("AM")) {
+                        if (sptime.hour == 12) {
+                            sptime.hour = 12;
+                        }
+                        else {
+                            sptime.hour = sptime.hour + 12;
+                        }
+                    }
+                    ctime.erase(0, pos + delim.length());
+
+                    pos = ctime.find(delim);
+                    token = ctime.substr(0, pos);
+                    sptime.minute = stoi(token);
+                    ctime.erase(0, pos + delimiter.length());
+
+                    sptime.second = stoi(ctime);
+
+
+
+                    //MessageBox(iphwnd, tdhoval, L"", MB_OK);
+                }
+                }
+                dao.stoptime = sptime;
+                /*
                 int tdmmlen = GetWindowTextLengthW(pageentries[12]) + 1;
                 if (tdmmlen > 1) {
                     wchar_t* tdmmval = new wchar_t[tdmmlen];
@@ -763,7 +962,7 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
                     dao.timedescss = "00";    //return;               
 
                 }
-
+                */
                 std::wstring wsft(FaultType);
                 std::string strft(wsft.begin(), wsft.end());
                 dao.faulttype = strft;
@@ -887,9 +1086,9 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
         break;
         case SUBMITCLEAR:
         {
-            SetWindowText(pageentries[10], L"");
-            SetWindowText(pageentries[12], L"");
-            SetWindowText(pageentries[14], L"");
+            //SetWindowText(pageentries[10], L"");
+            //SetWindowText(pageentries[12], L"");
+            //SetWindowText(pageentries[14], L"");
             SetWindowText(pageentries[16], L"");
             SetWindowText(pageentries[20], L"");
             SetWindowText(pageentries[24], L"");
@@ -984,9 +1183,9 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
                 SendMessage(pageentries[8], CB_SELECTSTRING, (WPARAM)0, (LPARAM)TimeDescSelect);
                 //
 
-                SetWindowText(pageentries[10], std::wstring(dobj.timedeschh.begin(), dobj.timedeschh.end()).c_str());
-                SetWindowText(pageentries[12], std::wstring(dobj.timedescmm.begin(), dobj.timedescmm.end()).c_str());
-                SetWindowText(pageentries[14], std::wstring(dobj.timedescss.begin(), dobj.timedescss.end()).c_str());
+                //SetWindowText(pageentries[10], std::wstring(dobj.timedeschh.begin(), dobj.timedeschh.end()).c_str());
+                //SetWindowText(pageentries[12], std::wstring(dobj.timedescmm.begin(), dobj.timedescmm.end()).c_str());
+                //SetWindowText(pageentries[14], std::wstring(dobj.timedescss.begin(), dobj.timedescss.end()).c_str());
 
                 SetWindowText(pageentries[16], std::wstring(dobj.faultdesc.begin(), dobj.faultdesc.end()).c_str());
 

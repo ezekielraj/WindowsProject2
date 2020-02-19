@@ -17,13 +17,15 @@ dataModel::dataModel() {
     OpenConnection();
     try {
         stmt = con->createStatement();
-        stmt->execute("CREATE TABLE IF NOT EXISTS `maindata_new1` ( \
+        stmt->execute("CREATE TABLE IF NOT EXISTS `maindata_new2` ( \
             `id` int(100) unsigned NOT NULL AUTO_INCREMENT, \
             `date` varchar(256) NOT NULL, \
             `equipmenttag` varchar(512), \
             `equipmentdesc` varchar(1024), \
             `norunreason` varchar(512), \
             `timedetail` varchar(512), \
+            `starttime` timestamp, \
+            `stoptime` timestamp, \
             `timedesc` varchar(512), \
             `typeoffault` varchar(512), \
             `fmdesc` varchar(512), \
@@ -32,6 +34,10 @@ dataModel::dataModel() {
             `attendeename` varchar(512), \
             `responsibility` varchar(512), \
             `remarks` varchar(1024), \
+            `created_at` timestamp not null default now(), \
+            `created_by` varchar(512), \
+            `updated_at` timestamp not null default now() on update now(), \
+            `updated_by` varchar(512), \
             PRIMARY KEY(`id`) \
             ) ENGINE = InnoDB");
         //delete stmt;
@@ -44,13 +50,17 @@ dataModel::dataModel() {
 
 bool dataModel::insertdata(dataobject &dm) {
     try {
+
+
         stmt = con->createStatement();
         res = stmt->executeQuery("SELECT * from " + tablename + " where date = '" + dm.date + "' \
                                         AND equipmenttag = '"+dm.equipnt +"' \
                                         AND equipmentdesc = '"+dm.equipdes+"' \
                                         AND norunreason = '"+dm.norunreason +"' \
                                         AND timedetail = '"+dm.timedesc+"' \
-                                        AND timedesc = '"+dm.timedeschh+":"+dm.timedescmm+":"+ dm.timedescss + "' \
+                                        AND starttime = '"+dm.starttime.getMysqlString()+"' \
+                                        AND stoptime = '"+dm.stoptime.getMysqlString()+"' \
+                                        AND timedesc = '"+ getSubHours(dm.starttime, dm.stoptime) + "' \
                                         AND typeoffault = '"+dm.faulttype+"' \
                                         AND fmdesc = '"+ base64_encode(reinterpret_cast<const unsigned char*>(dm.faultdesc.c_str()), dm.faultdesc.length()) +"' \
                                         AND process = '"+dm.processname+"' \
@@ -63,19 +73,22 @@ bool dataModel::insertdata(dataobject &dm) {
         if (!res->next()) {
             //OutputDebugString(L"hihihi");
             stmt = con->createStatement();
-            std::string querystring = "insert into " + tablename + " (date,equipmenttag,equipmentdesc, norunreason, timedetail, timedesc, typeoffault, \
-                           fmdesc, process, effectonprocess, attendeename, responsibility, remarks ) values ('" + dm.date + "' \
+            std::string querystring = "insert into " + tablename + " (date,equipmenttag,equipmentdesc, norunreason, timedetail, starttime, stoptime, timedesc, typeoffault, \
+                           fmdesc, process, effectonprocess, attendeename, responsibility, created_by, remarks ) values ('" + dm.date + "' \
                                         ,'" + dm.equipnt + "' \
                                         ,'"+dm.equipdes+"' \
                                         ,'" + dm.norunreason + "' \
                                         ,'" + dm.timedesc +"' \
-                                        ,'" + dm.timedeschh + ":" + dm.timedescmm + ":" + dm.timedescss + "' \
+                                        ,'" + dm.starttime.getMysqlString()+ "' \
+                                        ,'" + dm.stoptime.getMysqlString() + "' \
+                                        ,'" + getSubHours(dm.starttime, dm.stoptime) + "' \
                                         ,'" + dm.faulttype + "' \
                                         ,'" + base64_encode(reinterpret_cast<const unsigned char*>(dm.faultdesc.c_str()), dm.faultdesc.length()) + "' \
                                         ,'" + dm.processname + "' \
                                         ,'" + base64_encode(reinterpret_cast<const unsigned char*>(dm.processeffect.c_str()), dm.processeffect.length()) + "' \
                                         ,'" + dm.attendeename + "' \
                                         ,'" + dm.responsibility + "' \
+                                        ,'" + dm.created_by + "' \
                                         ,'" + base64_encode(reinterpret_cast<const unsigned char*>(dm.remarks.c_str()), dm.remarks.length()) + "')";
             //std::wstring To(querystring.begin(), querystring.end());
             //LPCWSTR Last = To.c_str();
@@ -93,7 +106,9 @@ bool dataModel::insertdata(dataobject &dm) {
                                         AND equipmentdesc = '" + dm.equipdes + "' \
                                         AND norunreason = '" + dm.norunreason + "' \
                                         AND timedetail = '" + dm.timedesc + "' \
-                                        AND timedesc = '" + dm.timedeschh + ":" + dm.timedescmm + ":" + dm.timedescss + "' \
+                                        AND starttime = '" + dm.starttime.getMysqlString() + "' \
+                                        AND stoptime = '" + dm.stoptime.getMysqlString() + "' \
+                                        AND timedesc = '" + getSubHours(dm.starttime, dm.stoptime) + "' \
                                         AND typeoffault = '" + dm.faulttype + "' \
                                         AND fmdesc = '" + base64_encode(reinterpret_cast<const unsigned char*>(dm.faultdesc.c_str()), dm.faultdesc.length()) + "' \
                                         AND process = '" + dm.processname + "' \
@@ -126,13 +141,16 @@ bool dataModel::updatedata(dataobject &dm) {
                                         , equipmentdesc = '" + dm.equipdes + "' \
                                         , norunreason = '" + dm.norunreason + "' \
                                         , timedetail = '" + dm.timedesc + "' \
-                                        , timedesc = '" + dm.timedeschh + ":" + dm.timedescmm + ":" + dm.timedescss + "' \
+                                        , starttime = '" + dm.starttime.getMysqlString() + "' \
+                                        , stoptime = '" +dm.stoptime.getMysqlString()+ "' \
+                                        , timedesc = '" + getSubHours(dm.starttime, dm.stoptime) + "' \
                                         , typeoffault = '" + dm.faulttype + "' \
                                         , fmdesc = '" + base64_encode(reinterpret_cast<const unsigned char*>(dm.faultdesc.c_str()), dm.faultdesc.length()) + "' \
                                         , process = '" + dm.processname + "' \
                                         , effectonprocess = '" + base64_encode(reinterpret_cast<const unsigned char*>(dm.processeffect.c_str()), dm.processeffect.length()) + "' \
                                         , attendeename = '" + dm.attendeename + "' \
                                         , responsibility = '" + dm.responsibility + "' \
+                                        , updated_by = '" +dm.updated_by+ "' \
                                         , remarks = '" + base64_encode(reinterpret_cast<const unsigned char*>(dm.remarks.c_str()), dm.remarks.length()) + "' \
                                         WHERE id = '" + std::to_string(dm.id) + "'");
 
@@ -146,7 +164,9 @@ bool dataModel::updatedata(dataobject &dm) {
                                         AND equipmenttag = '" + dm.equipnt + "' \
                                         AND norunreason = '" + dm.norunreason + "' \
                                         AND timedetail = '" + dm.timedesc + "' \
-                                        AND timedesc = '" + dm.timedeschh + ":" + dm.timedescmm + ":" + dm.timedescss + "' \
+                                        AND starttime = '" + dm.starttime.getMysqlString() + "' \
+                                        AND stoptime = '" + dm.stoptime.getMysqlString() + "' \
+                                        AND timedesc = '" + getSubHours(dm.starttime, dm.stoptime) + "' \
                                         AND typeoffault = '" + dm.faulttype + "' \
                                         AND fmdesc = '" + base64_encode(reinterpret_cast<const unsigned char*>(dm.faultdesc.c_str()), dm.faultdesc.length()) + "' \
                                         AND process = '" + dm.processname + "' \
@@ -183,9 +203,18 @@ std::vector<dataobject> dataModel::getalldatas() {
 
             dao.timedesc = res->getString("timedetail");
             
+            std::string stt = res->getString("starttime");
+            std::string spt = res->getString("stoptime");
+            
+            CDateTime cus;
+            dao.starttime = cus.getcdatetime(stt);
+            dao.starttime = cus.getcdatetime(spt);
+
+            
             std::string s = res->getString("timedesc");
             std::string delimiter = ":";
 
+            
 
             size_t pos = 0;
             std::string token;
@@ -215,6 +244,8 @@ std::vector<dataobject> dataModel::getalldatas() {
             dao.attendeename = res->getString("attendeename");
             dao.responsibility = res->getString("responsibility");
             dao.remarks = base64_decode(res->getString("remarks"));
+            dao.created_by = res->getString("created_by");
+            dao.updated_by = res->getString("updated_by");
             datalist.push_back(dao);
         }
         return datalist;
@@ -240,6 +271,13 @@ std::vector<dataobject> dataModel::getalldata() {
 
             dao.timedesc = res->getString("timedetail");
 
+            std::string stt = res->getString("starttime");
+            std::string spt = res->getString("stoptime");
+
+            CDateTime cus;
+            dao.starttime = cus.getcdatetime(stt);
+            dao.starttime = cus.getcdatetime(spt);
+
             std::string s = res->getString("timedesc");
             std::string delimiter = ":";
 
@@ -272,6 +310,8 @@ std::vector<dataobject> dataModel::getalldata() {
             dao.attendeename = res->getString("attendeename");
             dao.responsibility = res->getString("responsibility");
             dao.remarks = base64_decode(res->getString("remarks"));
+            dao.created_by = res->getString("created_by");
+            dao.updated_by = res->getString("updated_by");
             datalist.push_back(dao);
         }
         return datalist;
@@ -295,7 +335,12 @@ dataobject dataModel::getOnedata(std::string &editid) {
             dao.norunreason = res->getString("norunreason");
 
             dao.timedesc = res->getString("timedetail");
+            std::string stt = res->getString("starttime");
+            std::string spt = res->getString("stoptime");
 
+            CDateTime cus;
+            dao.starttime = cus.getcdatetime(stt);
+            dao.starttime = cus.getcdatetime(spt);
             std::string s = res->getString("timedesc");
             std::string delimiter = ":";
 
@@ -328,7 +373,8 @@ dataobject dataModel::getOnedata(std::string &editid) {
             dao.attendeename = res->getString("attendeename");
             dao.responsibility = res->getString("responsibility");
             dao.remarks = base64_decode(res->getString("remarks"));
-
+            dao.created_by = res->getString("created_by");
+            dao.updated_by = res->getString("updated_by");
         
         }
 

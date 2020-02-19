@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="adminpage.h" />
     <ClInclude Include="Base64.h" />
+    <ClInclude Include="CDateTime.h" />
     <ClInclude Include="dataModel.h" />
     <ClInclude Include="dbbackuppage.h" />
     <ClInclude Include="DBhandler.h" />
@@ -178,6 +179,7 @@
   <ItemGroup>
     <ClCompile Include="adminpage.cpp" />
     <ClCompile Include="Base64.cpp" />
+    <ClCompile Include="CDateTime.cpp" />
     <ClCompile Include="dataModel.cpp" />
     <ClCompile Include="dbbackuppage.cpp" />
     <ClCompile Include="DBhandler.cpp" />
