@@ -174,8 +174,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         AppendMenuW(hMenubar, MF_POPUP, (UINT_PTR)hMenu, L"&File");
             AppendMenuW(hMenu1, MF_STRING, IDM_AP_LOGIN, L"&Login");
         AppendMenuW(hMenubar, MF_POPUP, (UINT_PTR)hMenu1, L"&Admin Page");
-        AppendMenuW(hMenubar, MF_STRING, IDM_IP, L"&Input Page");
-        AppendMenuW(hMenubar, MF_STRING, IDM_OP, L"&Output Page");
+        AppendMenuW(hMenubar, MF_POPUP, (UINT_PTR)hMenu1, L"&Input Page");
+       //AppendMenuW(hMenubar, MF_STRING, IDM_IP, L"&Input Page");
+       AppendMenuW(hMenubar, MF_STRING, IDM_OP, L"&Output Page");
         AppendMenuW(hMenubar, MF_STRING, IDM_HELP, L"&Help");
 
         SetMenu(hWnd, hMenubar);
@@ -213,7 +214,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 ShowImmage = false;
                 p->DestroyPage();
                 LOGGER->Log("previous page destroyed in the page objecct");
-                p = new inputpage(hWnd);
+                if (loginpage::UserAuthenticated) {
+                    p = new inputpage(hWnd);
+                    
+                    hMenu1 = CreateMenu();
+                    AppendMenuW(hMenu1, MF_STRING, IDM_IP, L"&Input Updates");
+                    AppendMenuW(hMenu1, MF_STRING, IDM_AP_LOGOUT, L"&Logout");
+                    ModifyMenuW(hMenubar, 2, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu1, L"&Input Page");
+                    SetMenu(hWnd, hMenubar);
+                    
+                }
+                else {
+                    p = new loginpage(hWnd);
+                    
+                }
                 LOGGER->Log("input page ctor class is created");
                 p->CreatePage();
                 LOGGER->Log("Create for input page is executed successfully");
@@ -268,11 +282,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                     loginpage::Authenticated = false;
                     hMenu1 = CreateMenu();
                     AppendMenuW(hMenu1, MF_STRING, IDM_AP_LOGIN, L"&Login");
-                    ModifyMenuW(hMenubar, 1, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu1, L"&AdminPage");
+                    ModifyMenuW(hMenubar, 1, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu1, L"&Admin Page");
+                    SetMenu(hWnd, hMenubar);
+                    
+                }
+                if (loginpage::UserAuthenticated) {
+                    loginpage::UserAuthenticated = false;
+                    hMenu1 = CreateMenu();
+                    AppendMenuW(hMenu1, MF_STRING, IDM_AP_LOGIN, L"&Login");
+                    ModifyMenuW(hMenubar, 2, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu1, L"&Input Page");
                     SetMenu(hWnd, hMenubar);
                 }
                     p->DestroyPage();
-                    p = new homepage(hWnd);
+                    p = new loginpage(hWnd);
                     p->CreatePage();
                 
                 break;

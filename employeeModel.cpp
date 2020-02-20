@@ -147,3 +147,18 @@ bool employeeModel::updateemployee(empobjects &eo) {
 
     }
 }
+
+std::string employeeModel::getPassword(std::string &username) {
+    try {
+        stmt = con->createStatement();
+        res = stmt->executeQuery("SELECT password FROM " + tablename + " where employeenum = '" + username + "' or employeename = '"+username+"'");
+
+        if (res->next()) {
+            return res->getString("password");
+        }
+        return "";
+    }
+    catch (sql::SQLException &e) {
+
+    }
+}

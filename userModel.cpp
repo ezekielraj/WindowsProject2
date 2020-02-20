@@ -30,8 +30,11 @@ std::string userModel::getPassword(std::string username) {
     try {
         stmt = con->createStatement();
         res = stmt->executeQuery("SELECT * from " + tablename + " where username = '" + username + "'");
-        while (res->next()) {
+        if (res->next()) {
             return res->getString("password");
+        }
+        else {
+            return "";
         }
     }catch(sql::SQLException &e){
         

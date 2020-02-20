@@ -5,10 +5,12 @@
 #include "Pages.h"
 #include "DBhandler.h"
 #include "userModel.h"
+#include "employeeModel.h"
 #include "base64.h"
 #include "loginpage.h"
 
 #define IDM_ADMIN_PAGE 6005
+#define IDM_IP 6000
 
 #ifndef LOGINPAGES_CPP_INCLUDED
 #define LOGINPAGES_CPP_INCLUDED
@@ -108,8 +110,21 @@
                         (LPARAM)lphwnd);
                 }
                 else {
-                    MessageBoxA(NULL, "Username or password is wrong", "User-id", MB_OK);
-                    loginpage::Authenticated = false;
+                    employeeModel em;
+                    em.OpenConnection();
+                    std::string upass = em.getPassword(struser);
+                    em.closeConnection();
+                    if (upass.compare(encodedpass) == 0) {
+                        loginpage::UserAuthenticated = true;
+                        SendMessage(lphwnd, WM_COMMAND, MAKEWPARAM(IDM_IP, GetDlgCtrlID(lphwnd)),
+                            (LPARAM)lphwnd);
+                    }
+                    else {
+                        MessageBoxA(NULL, "Username or password is wrong", "User-id", MB_OK);
+                        loginpage::Authenticated = false;
+                        loginpage::UserAuthenticated = false;
+                    }
+
                 }
                 //MessageBoxA(NULL, pass.c_str(), "User-id", MB_OK);
                 //MessageBoxA(NULL, encodedpass.c_str(), "User-id", MB_OK);
@@ -135,5 +150,6 @@
     }
 
     bool loginpage::Authenticated = false;
+    bool loginpage::UserAuthenticated  = false;
 #endif
 

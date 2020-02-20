@@ -8,6 +8,7 @@ private:
     HWND lphwnd;
 public:
     static bool Authenticated;
+    static bool UserAuthenticated;
     loginpage(HWND&);
     void CreatePage();
     void HandleEvent(WPARAM , LPARAM );
