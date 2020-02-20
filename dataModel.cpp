@@ -340,7 +340,7 @@ dataobject dataModel::getOnedata(std::string &editid) {
 
             CDateTime cus;
             dao.starttime = cus.getcdatetime(stt);
-            dao.starttime = cus.getcdatetime(spt);
+            dao.stoptime = cus.getcdatetime(spt);
             std::string s = res->getString("timedesc");
             std::string delimiter = ":";
 

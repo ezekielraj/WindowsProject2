@@ -18,8 +18,9 @@
 #define DELETERESP 5059
 
 #define EDITEQUIP 5060
-
+#define EDITEMP 5061
 bool adminpage::eqeditmode = false;
+bool adminpage::emeditmode = false;
 
 adminpage::adminpage(HWND &hwnd) : pages(50) {
     aphwnd = hwnd;
@@ -157,12 +158,25 @@ void adminpage::CreatePage() {
         280, 150, 150, 25,
         aphwnd, NULL, NULL, NULL);
 
+    pageentries[45] = CreateWindowA("STATIC",
+        "Password :",
+        WS_VISIBLE | WS_CHILD,
+        280, 180, 150, 25,
+        aphwnd,
+        NULL, NULL, NULL
+    );
+
+    pageentries[46] = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(""),
+        WS_CHILD | WS_VISIBLE,
+        280, 210, 150, 25,
+        aphwnd, NULL, NULL, NULL);
+
     pageentries[10] = CreateWindowA(
         "BUTTON",  // Predefined class; Unicode assumed
         "SUBMIT",      // Button text
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles
         280,         // x position
-        190,         // y position
+        250,         // y position
         100,        // Button width
         30,        // Button height
         aphwnd,     // Parent window
@@ -173,23 +187,36 @@ void adminpage::CreatePage() {
     pageentries[31] = CreateWindowA("STATIC",
         "ID :",
         WS_VISIBLE | WS_CHILD,
-        280, 230, 30, 30,
+        280, 290, 30, 30,
         aphwnd,
         NULL, NULL, NULL
     );
 
     pageentries[32] = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(""),
         WS_CHILD | WS_VISIBLE,
-        310, 230, 75, 30,
+        310, 290, 40, 30,
         aphwnd, NULL, NULL, NULL);
+    
+    pageentries[47] = CreateWindowA(
+        "BUTTON",  // Predefined class; Unicode assumed
+        "EDIT",      // Button text
+        WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles
+        355,         // x position
+        290,         // y position
+        45,        // Button width
+        30,        // Button height
+        aphwnd,     // Parent window
+        (HMENU)EDITEMP,       // No menu.
+        (HINSTANCE)GetWindowLong(aphwnd, GWLP_HINSTANCE),
+        NULL);      // Pointer not needed.
 
     pageentries[33] = CreateWindowA(
         "BUTTON",  // Predefined class; Unicode assumed
         "DELETE",      // Button text
         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles
-        390,         // x position
-        230,         // y position
-        75,        // Button width
+        405,         // x position
+        290,         // y position
+        70,        // Button width
         30,        // Button height
         aphwnd,     // Parent window
         (HMENU)DELETEEMP,       // No menu.
@@ -199,14 +226,14 @@ void adminpage::CreatePage() {
     pageentries[11] = CreateWindowA("STATIC",
         "",
         WS_VISIBLE | WS_CHILD,
-        280, 270, 200, 30,
+        280, 330, 200, 30,
         aphwnd,
         NULL, NULL, NULL
     );
     pageentries[12] = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(""),
         WS_CHILD | WS_VISIBLE | WS_VSCROLL |
         ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
-        280, 310, 200, 244,
+        280, 370, 200, 244,
         aphwnd,
         NULL, NULL, NULL
     );
@@ -492,28 +519,68 @@ void adminpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
             {
                 int enulen = GetWindowTextLengthW(pageentries[7]) + 1;
                 int enalen = GetWindowTextLengthW(pageentries[9]) + 1;
-                if (enulen > 1 && enalen > 1) {
+                int passlen = GetWindowTextLengthW(pageentries[46]) + 1;
+                if (enulen > 1 && enalen > 1 && passlen > 1) {
                     wchar_t* empnum = new wchar_t[enulen];
                     wchar_t* empname = new wchar_t[enalen];
+                    wchar_t* emppass = new wchar_t[passlen];
                     
                     GetWindowTextW(pageentries[7], empnum, enulen);
                     GetWindowTextW(pageentries[9], empname, enalen);
+                    GetWindowTextW(pageentries[46], emppass, passlen);
 
                     std::wstring wsempnum(empnum);
                     std::wstring wsempname(empname);
+                    std::wstring wsemppass(emppass);
 
                     std::string strempnum(wsempnum.begin(), wsempnum.end());
                     std::string strempname(wsempname.begin(), wsempname.end());
-                     
+                    std::string stremppass(wsemppass.begin(), wsemppass.end());
+
                     employeeModel empm;
                     empm.OpenConnection();
-                    if (empm.insemployee(strempnum, strempname)) {
-                        SetWindowTextA(pageentries[11], "Successfully inserted!!!");
-                        fillEmployeeEntries();
+
+                    if(!emeditmode){
+                        if (empm.insemployee(strempnum, strempname, stremppass)) {
+                            SetWindowTextA(pageentries[11], "Successfully inserted!!!");
+                            fillEmployeeEntries();
+                        }
+                        else {
+                            SetWindowTextA(pageentries[11], "Failed!! check if already exists");
+                        }
                     }
                     else {
-                        SetWindowTextA(pageentries[11], "Failed!! check if already exists");
+                        int eqid = GetWindowTextLengthW(pageentries[32]) + 1;
+                        if (eqid > 1) {
+                            wchar_t* eqidv = new wchar_t[eqid];
+                            GetWindowTextW(pageentries[32], eqidv, eqid);
+
+                            std::wstring wseqidv(eqidv);
+                            std::string streqidv(wseqidv.begin(), wseqidv.end());
+
+
+                            empobjects eo;
+                            eo.empnum = strempnum;
+                            eo.empname = strempname;
+                            eo.password = stremppass;
+                            eo.id = stoi(streqidv);
+
+                            if (empm.updateemployee(eo)) {
+                                SetWindowTextA(pageentries[11], "Updated successfully!!!");
+
+                            }
+                            else {
+                                SetWindowTextA(pageentries[11], "Failed!! ");
+                            }
+                            SetWindowTextA(pageentries[7], "");
+                            SetWindowTextA(pageentries[9], "");
+                            SetWindowTextA(pageentries[46], "");
+                            eqeditmode = false;
+
+                        }
+                        emeditmode = false;
                     }
+                    
                     empm.closeConnection();
                 }
                 else {
@@ -657,6 +724,36 @@ void adminpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
             }
             else {
                 SetWindowTextA(pageentries[4], "Fill Equipment id to edit");
+            }
+        }
+        break;
+        case EDITEMP:
+        {
+            int ulenn = GetWindowTextLengthW(pageentries[32]) + 1;
+            if (ulenn > 1) {
+                emeditmode = true;
+                wchar_t* equipnt = new wchar_t[ulenn];
+                GetWindowTextW(pageentries[32], equipnt, ulenn);
+
+                std::wstring wsequipnt(equipnt);
+                std::string strequipnt(wsequipnt.begin(), wsequipnt.end());
+
+
+                employeeModel em;
+                em.OpenConnection();
+
+                empobjects eo = em.getoneEmployee(strequipnt);
+                SetWindowTextA(pageentries[7], eo.empnum.c_str());
+                SetWindowTextA(pageentries[9], eo.empname.c_str());
+                SetWindowTextA(pageentries[46], eo.password.c_str());
+                SetWindowTextA(pageentries[11], "Edit Mode!!");
+
+
+                em.closeConnection();
+
+            }
+            else {
+                SetWindowTextA(pageentries[11], "Fill Employee table id to delete");
             }
         }
         break;
@@ -820,7 +917,7 @@ void adminpage::fillEmployeeEntries() {
     SetWindowPos(pageentries[12],
         0,
         280,
-        310,
+        370,
         200,
         244,
         0

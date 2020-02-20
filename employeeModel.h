@@ -7,6 +7,7 @@ struct empobjects
     int id;
     std::string empnum;
     std::string empname;
+    std::string password;
 };
 
 class employeeModel :
@@ -17,9 +18,10 @@ class employeeModel :
         std::string tablename = "employee";
     public:
         employeeModel();
-        bool insemployee(std::string&, std::string&);
+        bool insemployee(std::string&, std::string&, std::string&);
         std::vector<empobjects> getallemployees();
-
+        empobjects getoneEmployee(std::string&);
+        bool updateemployee(empobjects&);
         bool deleteemp(std::string&);
 };
 

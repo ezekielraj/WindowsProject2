@@ -1186,6 +1186,23 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
                 //SetWindowText(pageentries[10], std::wstring(dobj.timedeschh.begin(), dobj.timedeschh.end()).c_str());
                 //SetWindowText(pageentries[12], std::wstring(dobj.timedescmm.begin(), dobj.timedescmm.end()).c_str());
                 //SetWindowText(pageentries[14], std::wstring(dobj.timedescss.begin(), dobj.timedescss.end()).c_str());
+                std::string stdate = std::to_string(dobj.starttime.month) + "/" \
+                                 + std::to_string(dobj.starttime.day) + "/" \
+                                 + std::to_string(dobj.starttime.year);
+
+//                SetWindowText(pageentries[10], std::wstring(stdate.begin(), stdate.end()).c_str());
+                //OutputDebugString(std::wstring(stdate.begin(), stdate.end()).c_str());
+                SYSTEMTIME st;
+                st.wDay = dobj.starttime.day;
+                st.wMonth = dobj.starttime.month;
+                st.wYear = dobj.starttime.year;
+                st.wHour = dobj.starttime.hour;
+                st.wMinute = dobj.starttime.minute;
+                st.wSecond = dobj.starttime.second;
+                SendMessage(pageentries[10], DTM_SETSYSTEMTIME, (WPARAM)GDT_VALID, (LPARAM)&st);
+                SendMessage(pageentries[11], DTM_SETSYSTEMTIME, (WPARAM)GDT_VALID, (LPARAM)&st);
+
+                SetWindowText(pageentries[10], std::wstring(stdate.begin(), stdate.end()).c_str());
 
                 SetWindowText(pageentries[16], std::wstring(dobj.faultdesc.begin(), dobj.faultdesc.end()).c_str());
 

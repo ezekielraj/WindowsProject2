@@ -7,6 +7,7 @@ class adminpage :
 {
 private:
     static bool eqeditmode;
+    static bool emeditmode;
     HWND aphwnd;
 public:
     adminpage(HWND&);

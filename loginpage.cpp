@@ -22,7 +22,7 @@
         std::cout << "creating loginpage" << std::endl;
 
         pageentries[0] = CreateWindowA("STATIC",
-            "ADMIN LOGIN",
+            "LOGIN PAGE",
             WS_VISIBLE | WS_CHILD,
             20, 20, 300, 25,
             lphwnd,

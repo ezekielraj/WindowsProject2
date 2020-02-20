@@ -1,4 +1,5 @@
 #include "employeeModel.h"
+#include "Base64.h"
 
 employeeModel::employeeModel() {
     OpenConnection();
@@ -8,10 +9,17 @@ employeeModel::employeeModel() {
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT, \
             `employeenum` varchar(256) NOT NULL, \
             `employeename` varchar(256) NOT NULL, \
+            `password` varchar(512) NOT NULL, \
             PRIMARY KEY(`id`), \
             UNIQUE KEY unique_empnum (employeenum) \
             ) ENGINE = InnoDB");
         //delete stmt;
+        stmt = con->createStatement();
+        res = stmt->executeQuery("show columns from `employee` like 'password'");
+        if (!res->next()) {
+            stmt = con->createStatement();
+            stmt->execute("alter table `employee` add password varchar(512) not null after `employeename`");
+        }
     }
     catch (sql::SQLException &e) {
 
@@ -20,14 +28,15 @@ employeeModel::employeeModel() {
 
 }
 
-bool employeeModel::insemployee(std::string &empnum, std::string &empname) {
+bool employeeModel::insemployee(std::string &empnum, std::string &empname, std::string &emppass) {
     try {
         stmt = con->createStatement();
         res = stmt->executeQuery("SELECT * from " + tablename + " where employeenum = '" + empnum + "'");
         if (!res->next()) {
             stmt = con->createStatement();
 
-            res = stmt->executeQuery("insert into " + tablename + " (employeenum, employeename) values ('" + empnum + "','"+empname+"')");
+            res = stmt->executeQuery("insert into " + tablename + " (employeenum, employeename, password) values ('" + empnum + "','"+empname+"', \
+                '"+ base64_encode(reinterpret_cast<const unsigned char*>(emppass.c_str()), emppass.length()) +"')");
            // stmt = con->createStatement();
 
         }
@@ -68,6 +77,25 @@ std::vector<empobjects> employeeModel::getallemployees() {
     }
 }
 
+empobjects employeeModel::getoneEmployee(std::string &id) {
+    try {
+        empobjects empobj;
+        stmt = con->createStatement();
+        res = stmt->executeQuery("SELECT * FROM " + tablename + " where id = '"+id+"'");
+        if (res->next()) {
+            empobj.id = res->getInt("id");
+            empobj.empnum = res->getString("employeenum");
+            empobj.empname = res->getString("employeename");
+            empobj.password = base64_decode(res->getString("password"));
+        }
+        return empobj;
+    }
+    catch (sql::SQLException &e) {
+
+    }
+}
+
+
 bool employeeModel::deleteemp(std::string &empid) {
     try {
         stmt = con->createStatement();
@@ -91,6 +119,29 @@ bool employeeModel::deleteemp(std::string &empid) {
             return false;
         }
 
+    }
+    catch (sql::SQLException &e) {
+
+    }
+}
+
+bool employeeModel::updateemployee(empobjects &eo) {
+    try {
+        stmt = con->createStatement();
+        res = stmt->executeQuery("SELECT * FROM " + tablename + " where id = '" + std::to_string(eo.id) + "'");
+        if (res->next()) {
+            stmt = con->createStatement();
+            res = stmt->executeQuery("UPDATE " + tablename + " SET employeenum='" + eo.empnum + "', employeename = '"+eo.empname+"',password ='" + base64_encode(reinterpret_cast<const unsigned char*>(eo.password.c_str()), eo.password.length()) + "' where id = '" + std::to_string(eo.id) + "'");
+
+        }
+        stmt = con->createStatement();
+        res = stmt->executeQuery("SELECT * FROM " + tablename + " where id = '" + std::to_string(eo.id) + "'");
+        if (res->next()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     catch (sql::SQLException &e) {
 
