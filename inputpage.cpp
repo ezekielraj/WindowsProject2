@@ -7,6 +7,7 @@
 #include "processModel.h"
 #include "employeeModel.h"
 #include "faultModel.h"
+#include "loginpage.h"
 #include "dataModel.h"
 #include "respModel.h"
 #include <vector>
@@ -1021,7 +1022,8 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
                 else {
                     dao.remarks = "";
                 }
-
+                dao.created_by = loginpage::UserEmployeeid;
+                dao.updated_by = loginpage::UserEmployeeid;
                 if (inputpage::EditMode) {
 
                     int dataid = GetWindowTextLengthW(pageentries[33]) + 1;

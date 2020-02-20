@@ -55,6 +55,7 @@ class dataModel :
 
         std::vector<std::string> equipDelaytime(std::string&);
         std::vector<std::string> equipDowntime(std::string&);
+        std::vector<dataobject> getspecificdata(std::string, std::string);
 
         bool deletedata(std::string&);
 };

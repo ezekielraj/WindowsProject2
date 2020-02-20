@@ -113,9 +113,11 @@
                     employeeModel em;
                     em.OpenConnection();
                     std::string upass = em.getPassword(struser);
+                    std::string uempid = em.getempid(struser);
                     em.closeConnection();
                     if (upass.compare(encodedpass) == 0) {
                         loginpage::UserAuthenticated = true;
+                        loginpage::UserEmployeeid = uempid;
                         SendMessage(lphwnd, WM_COMMAND, MAKEWPARAM(IDM_IP, GetDlgCtrlID(lphwnd)),
                             (LPARAM)lphwnd);
                     }
@@ -151,5 +153,6 @@
 
     bool loginpage::Authenticated = false;
     bool loginpage::UserAuthenticated  = false;
+    std::string loginpage::UserEmployeeid = "";
 #endif
 

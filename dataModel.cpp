@@ -1,4 +1,5 @@
 #include "dataModel.h"
+#include "loginpage.h"
 #include "base64.h"
 #include<windows.h>
 /*  1.	Date(calendar selection type.)
@@ -132,7 +133,11 @@ bool dataModel::insertdata(dataobject &dm) {
 bool dataModel::updatedata(dataobject &dm) {
     try {
         stmt = con->createStatement();
-        res = stmt->executeQuery("SELECT * from " + tablename + " where id = '" + std::to_string(dm.id) + "'");
+        if (loginpage::Authenticated) {
+            res = stmt->executeQuery("SELECT * from " + tablename + " where id = '" + std::to_string(dm.id) + "';");
+        }else{
+            res = stmt->executeQuery("SELECT * from " + tablename + " where id = '" + std::to_string(dm.id) + "' and created_at >= now() - INTERVAL 1 DAY;");
+        }
         if (res->next()) {
 
             stmt = con->createStatement();
@@ -254,7 +259,75 @@ std::vector<dataobject> dataModel::getalldatas() {
 
     }
 }
+std::vector<dataobject> dataModel::getspecificdata(std::string eqt, std::string cdt) {
+    try {
+        std::vector<dataobject> datalist;
+        stmt = con->createStatement();
+        std::string qts = "SELECT * FROM " + tablename + " where equipmenttag like '%" + eqt + "%' and date like '%" + cdt + "%';";
 
+        OutputDebugString(std::wstring(qts.begin(), qts.end()).c_str());
+
+        //select * from maindata order by id desc limit 2;
+        res = stmt->executeQuery("SELECT * FROM " + tablename + " where equipmenttag like '%"+eqt+"%' and date like '%"+cdt+"%';");
+        while (res->next()) {
+            dataobject dao;
+            dao.id = res->getInt("id");
+            dao.date = res->getString("date");
+            dao.equipnt = res->getString("equipmenttag");
+            dao.equipdes = base64_decode(res->getString("equipmentdesc"));
+            dao.norunreason = res->getString("norunreason");
+
+            dao.timedesc = res->getString("timedetail");
+
+            std::string stt = res->getString("starttime");
+            std::string spt = res->getString("stoptime");
+
+            CDateTime cus;
+            dao.starttime = cus.getcdatetime(stt);
+            dao.starttime = cus.getcdatetime(spt);
+
+            std::string s = res->getString("timedesc");
+            std::string delimiter = ":";
+
+
+            size_t pos = 0;
+            std::string token;
+            pos = s.find(delimiter);
+            token = s.substr(0, pos);
+            //            std::cout << token << std::endl;
+            dao.timedeschh = token;
+            s.erase(0, pos + delimiter.length());
+
+            pos = s.find(delimiter);
+            token = s.substr(0, pos);
+            dao.timedescmm = token;
+            std::cout << token << std::endl;
+            s.erase(0, pos + delimiter.length());
+
+            dao.timedescss = s;
+            //std::cout << s << std::endl;
+
+//res->getString("timedesc").substr(0, res->getString("timedesc").find(":"));
+
+//            dao.timedescss = res->getString("timedesc");
+
+            dao.faulttype = res->getString("typeoffault");
+            dao.faultdesc = base64_decode(res->getString("fmdesc"));
+            dao.processname = res->getString("process");
+            dao.processeffect = base64_decode(res->getString("effectonprocess"));
+            dao.attendeename = res->getString("attendeename");
+            dao.responsibility = res->getString("responsibility");
+            dao.remarks = base64_decode(res->getString("remarks"));
+            dao.created_by = res->getString("created_by");
+            dao.updated_by = res->getString("updated_by");
+            datalist.push_back(dao);
+        }
+        return datalist;
+    }
+    catch (sql::SQLException &e) {
+
+    }
+}
 std::vector<dataobject> dataModel::getalldata() {
     try {
         std::vector<dataobject> datalist;

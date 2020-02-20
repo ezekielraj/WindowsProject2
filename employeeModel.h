@@ -24,5 +24,6 @@ class employeeModel :
         bool updateemployee(empobjects&);
         bool deleteemp(std::string&);
         std::string getPassword(std::string&);
+        std::string getempid(std::string&);
 };
 

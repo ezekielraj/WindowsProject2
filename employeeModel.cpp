@@ -162,3 +162,18 @@ std::string employeeModel::getPassword(std::string &username) {
 
     }
 }
+
+std::string employeeModel::getempid(std::string &username) {
+    try {
+        stmt = con->createStatement();
+        res = stmt->executeQuery("SELECT employeenum FROM " + tablename + " where employeenum = '" + username + "' or employeename = '" + username + "'");
+
+        if (res->next()) {
+            return res->getString("employeenum");
+        }
+        return "";
+    }
+    catch (sql::SQLException &e) {
+
+    }
+}

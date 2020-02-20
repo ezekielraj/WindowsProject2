@@ -6,6 +6,7 @@ class outputpage :
 {
 private:
     HWND ophwnd;
+    TCHAR  EquipNT[256];
 public:
     outputpage(HWND&);
     void CreatePage();

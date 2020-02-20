@@ -7,10 +7,13 @@
 
 #include "equipModel.h"
 
+#include <string>
+#include <atlstr.h>
 
 
 #define GENCSV 800
-
+#define OCMBOX1 801
+#define GETDATA 802
 
 outputpage::outputpage(HWND &hwnd) : pages(30) {
     ophwnd = hwnd;
@@ -34,11 +37,205 @@ void outputpage::CreatePage() {
              NULL)
      );
 
+     pageentries[2] = CreateWindowA("ComboBox", "",
+         CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE | WS_VSCROLL | CBS_AUTOHSCROLL |
+         ES_LEFT | WS_HSCROLL,
+         40, 75, 150, 200, ophwnd, (HMENU)OCMBOX1, NULL,
+         NULL);
+
+     pageentries[3] = CreateWindowW(L"SysDateTimePick32", NULL,
+
+         WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP,
+
+         200, 75, 150, 30, ophwnd, NULL, NULL, NULL);
+
+     pageentries[4] = CreateWindowA(
+             "BUTTON",  // Predefined class; Unicode assumed
+             "Get Data",      // Button text
+             WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles
+             360,         // x position
+             75,         // y position
+             100,        // Button width
+             30,        // Button height
+             ophwnd,     // Parent window
+             (HMENU)GETDATA,       // No menu.
+             (HINSTANCE)GetWindowLong(ophwnd, GWLP_HINSTANCE),
+             NULL);
+
+     equipModel em;
+     em.OpenConnection();
+     std::vector<std::string> equiplist = em.getallequipnt();
+     em.closeConnection();
+     TCHAR A[16];
+
+     memset(&A, 0, sizeof(A));
+     for (auto it = equiplist.begin(); it != equiplist.end(); ++it) {
+
+         _tcscpy_s(A, CA2T((*it).c_str()));
+
+         // Add string to combobox.
+         SendMessage(pageentries[2], (UINT)CB_ADDSTRING, (WPARAM)0, (LPARAM)A);
+     }
+
+     // Send the CB_SETCURSEL message to display an initial item 
+     //  in the selection field  
+     SendMessage(pageentries[2], CB_SETCURSEL, (WPARAM)0, (LPARAM)0);
+
+     int ItemIndex1 = SendMessage(pageentries[2], (UINT)CB_GETCURSEL,
+         (WPARAM)0, (LPARAM)0);
+
+     (TCHAR)SendMessage(pageentries[2], (UINT)CB_GETLBTEXT,
+         (WPARAM)ItemIndex1, (LPARAM)EquipNT);
+
 
 }
 void outputpage::HandleEvent(WPARAM wParam, LPARAM lParam){ 
     switch (LOWORD(wParam))
     {
+        case GETDATA:
+        {
+            dataModel dm;
+            dm.OpenConnection();
+
+            std::wstring wsequipnt(EquipNT);
+            std::string strequipnt(wsequipnt.begin(), wsequipnt.end());
+            int tdhhlen = GetWindowTextLengthW(pageentries[3]) + 1;
+           // if (tdhhlen > 1) {
+                wchar_t* tdhhval = new wchar_t[tdhhlen];
+                GetWindowTextW(pageentries[3], tdhhval, tdhhlen);
+
+                std::wstring wstdhhval(tdhhval);
+                std::string strtdhhval(wstdhhval.begin(), wstdhhval.end());
+
+                std::string delimiter = "/";
+                size_t pos = 0;
+                std::string token;
+                pos = strtdhhval.find(delimiter);
+                token = strtdhhval.substr(0, pos);
+                //            std::cout << token << std::endl;
+                std::string month = token;
+                strtdhhval.erase(0, pos + delimiter.length());
+
+                pos = strtdhhval.find(delimiter);
+                token = strtdhhval.substr(0, pos);
+                std::string day = token;
+                std::cout << token << std::endl;
+                strtdhhval.erase(0, pos + delimiter.length());
+
+                std::string year = strtdhhval;
+
+                std::string completedate = year + "-" + month + "-" + day;
+            //}
+                int height = 110;
+            std::vector<dataobject> datalist = dm.getspecificdata(strequipnt, completedate);
+            for (auto it = datalist.begin(); it != datalist.end(); ++it) {
+            
+                pageentries.push_back(CreateWindowA("STATIC",
+                    (LPCSTR)std::to_string(it->id).c_str(),
+                    WS_VISIBLE | WS_CHILD,
+                    40, height, 20, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                pageentries.push_back(CreateWindowA("STATIC",
+                    (LPCSTR)(it->date).c_str(),
+                    WS_VISIBLE | WS_CHILD,
+                    65, height, 75, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                pageentries.push_back(CreateWindowA("STATIC",
+                    (LPCSTR)(it->equipnt).c_str(),
+                    WS_VISIBLE | WS_CHILD,
+                    145, height, 75, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                pageentries.push_back(CreateWindowA("STATIC",
+                    (LPCSTR)(it->norunreason).c_str(),
+                    WS_VISIBLE | WS_CHILD,
+                    225, height, 75, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                std::string timedescnew = it->timedesc + " | " + it->timedeschh + ":" + it->timedescmm + ":" + it->timedescss;
+                pageentries.push_back(CreateWindowA("STATIC",
+                    (LPCSTR)(timedescnew).c_str(),
+                    WS_VISIBLE | WS_CHILD,
+                    305, height, 150, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                pageentries.push_back(CreateWindowA("STATIC",
+                    (LPCSTR)(it->faulttype).c_str(),
+                    WS_VISIBLE | WS_CHILD,
+                    460, height, 100, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                pageentries.push_back(CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"),
+                    std::wstring(it->faultdesc.begin(), it->faultdesc.end()).c_str(),
+                    WS_CHILD | WS_VISIBLE | WS_VSCROLL |
+                    ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
+                    565, height, 150, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                pageentries.push_back(CreateWindowA("STATIC",
+                    (LPCSTR)(it->processname).c_str(),
+                    WS_VISIBLE | WS_CHILD,
+                    720, height, 75, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                pageentries.push_back(CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"),
+                    std::wstring(it->processeffect.begin(), it->processeffect.end()).c_str(),
+                    WS_CHILD | WS_VISIBLE | WS_VSCROLL |
+                    ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
+                    800, height, 150, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                pageentries.push_back(CreateWindowA("STATIC",
+                    (LPCSTR)(it->attendeename).c_str(),
+                    WS_VISIBLE | WS_CHILD,
+                    955, height, 75, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                pageentries.push_back(
+                    CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), std::wstring(it->remarks.begin(), it->remarks.end()).c_str(),
+                        WS_CHILD | WS_VISIBLE | WS_VSCROLL |
+                        ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
+                        1035, height, 150, 60,
+                        ophwnd,
+                        NULL, NULL, NULL
+                    ));
+                pageentries.push_back(CreateWindowA("STATIC",
+                    (LPCSTR)(it->responsibility).c_str(),
+                    WS_VISIBLE | WS_CHILD,
+                    1190, height, 100, 60,
+                    ophwnd,
+                    NULL, NULL, NULL
+                ));
+                height = height + 65;
+
+            }
+
+
+            dm.closeConnection();
+        }
+        break;
+        case OCMBOX1:
+        {
+            int ItemIndex = SendMessage(pageentries[2], (UINT)CB_GETCURSEL,
+                (WPARAM)0, (LPARAM)0);
+
+            (TCHAR)SendMessage(pageentries[2], (UINT)CB_GETLBTEXT,
+                (WPARAM)ItemIndex, (LPARAM)EquipNT);
+            ///MessageBox(ophwnd, (LPCWSTR)ListItem, TEXT("Item Selected"), MB_OK);
+        }
+        break;
         case GENCSV:
             {
             wchar_t filename[MAX_PATH];

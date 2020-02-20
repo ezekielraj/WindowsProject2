@@ -2607,4 +2607,160 @@
 2020-02-21.01:59:32:	Input page: no run reason added
 2020-02-21.01:59:32:	Input page: time descripton added
 2020-02-21.01:59:32:	Input page: fault type added
-2020-02-21.01:59:32:	Input p
+2020-02-21.01:59:32:	Input p2020-02-21.03:24:13:	Input menu cclicked and in switch case of ip
+2020-02-21.03:24:13:	previous page destroyed in the page objecct
+2020-02-21.03:24:13:	input page ctor class is created
+2020-02-21.03:24:13:	Input page: CreatePage() starting
+2020-02-21.03:24:14:	Input page: Added All the Page entries
+2020-02-21.03:24:14:	Input page:  - got equipment list
+2020-02-21.03:24:14:	Input page: filled combobox 3 with equipment list
+2020-02-21.03:24:14:	Input page: filled no run reason in combobox 6
+2020-02-21.03:24:14:	Input page: filled time description
+2020-02-21.03:24:14:	Input page: got fault model data from db
+2020-02-21.03:24:14:	Input page: filled fault model combo box
+2020-02-21.03:24:14:	Input page: got process model data from db
+2020-02-21.03:24:14:	Input page: filled pm in combo box 18
+2020-02-21.03:24:14:	Input page: got employee model from db
+2020-02-21.03:24:14:	Input page: filled employee mode data in cb
+2020-02-21.03:24:14:	Input page: got responsibility model
+2020-02-21.03:24:14:	Input page: filled resp model
+2020-02-21.03:24:14:	Input page: starting to fill recent entries
+2020-02-21.03:24:14:	Input page: getting data model data
+2020-02-21.03:24:14:	Input page: got all data list
+2020-02-21.03:24:14:	Input page: started for loop for 5 entries
+2020-02-21.03:24:14:	Input page: id added
+2020-02-21.03:24:14:	Input page: date added
+2020-02-21.03:24:14:	Input page: equipment added
+2020-02-21.03:24:14:	Input page: no run reason added
+2020-02-21.03:24:14:	Input page: time descripton added
+2020-02-21.03:24:14:	Input page: fault type added
+2020-02-21.03:24:14:	Input page: fault description added
+2020-02-21.03:24:14:	Input page: processname added
+2020-02-21.03:24:14:	Input page: process effect added
+2020-02-21.03:24:14:	Input page: attendeename added
+2020-02-21.03:24:14:	Input page: remarks added
+2020-02-21.03:24:14:	Input page: responsibility added
+2020-02-21.03:24:14:	Input page: id added
+2020-02-21.03:24:14:	Input page: date added
+2020-02-21.03:24:14:	Input page: equipment added
+2020-02-21.03:24:14:	Input page: no run reason added
+2020-02-21.03:24:14:	Input page: time descripton added
+2020-02-21.03:24:14:	Input page: fault type added
+2020-02-21.03:24:14:	Input page: fault description added
+2020-02-21.03:24:14:	Input page: processname added
+2020-02-21.03:24:14:	Input page: process effect added
+2020-02-21.03:24:14:	Input page: attendeename added
+2020-02-21.03:24:14:	Input page: remarks added
+2020-02-21.03:24:14:	Input page: responsibility added
+2020-02-21.03:24:14:	Input page: id added
+2020-02-21.03:24:14:	Input page: date added
+2020-02-21.03:24:14:	Input page: equipment added
+2020-02-21.03:24:14:	Input page: no run reason added
+2020-02-21.03:24:14:	Input page: time descripton added
+2020-02-21.03:24:14:	Input page: fault type added
+2020-02-21.03:24:14:	Input page: fault description added
+2020-02-21.03:24:14:	Input page: processname added
+2020-02-21.03:24:14:	Input page: process effect added
+2020-02-21.03:24:14:	Input page: attendeename added
+2020-02-21.03:24:14:	Input page: remarks added
+2020-02-21.03:24:14:	Input page: responsibility added
+2020-02-21.03:24:14:	Input page: id added
+2020-02-21.03:24:14:	Input page: date added
+2020-02-21.03:24:14:	Input page: equipment added
+2020-02-21.03:24:14:	Input page: no run reason added
+2020-02-21.03:24:14:	Input page: time descripton added
+2020-02-21.03:24:14:	Input page: fault type added
+2020-02-21.03:24:14:	Input page: fault description added
+2020-02-21.03:24:14:	Input page: processname added
+2020-02-21.03:24:14:	Input page: process effect added
+2020-02-21.03:24:14:	Input page: attendeename added
+2020-02-21.03:24:14:	Input page: remarks added
+2020-02-21.03:24:14:	Input page: responsibility added
+2020-02-21.03:24:14:	Input page: id added
+2020-02-21.03:24:14:	Input page: date added
+2020-02-21.03:24:14:	Input page: equipment added
+2020-02-21.03:24:14:	Input page: no run reason added
+2020-02-21.03:24:14:	Input page: time descripton added
+2020-02-21.03:24:14:	Input page: fault type added
+2020-02-21.03:24:14:	Input page: fault description added
+2020-02-21.03:24:14:	Input page: processname added
+2020-02-21.03:24:14:	Input page: process effect added
+2020-02-21.03:24:14:	Input page: attendeename added
+2020-02-21.03:24:14:	Input page: remarks added
+2020-02-21.03:24:14:	Input page: responsibility added
+2020-02-21.03:24:14:	Input page: for loop completed filling
+2020-02-21.03:24:14:	Create for input page is executed successfully
+2020-02-21.03:24:23:	Input page: getting data model data
+2020-02-21.03:24:23:	Input page: got all data list
+2020-02-21.03:24:23:	Input page: started for loop for 5 entries
+2020-02-21.03:24:23:	Input page: id added
+2020-02-21.03:24:23:	Input page: date added
+2020-02-21.03:24:23:	Input page: equipment added
+2020-02-21.03:24:23:	Input page: no run reason added
+2020-02-21.03:24:23:	Input page: time descripton added
+2020-02-21.03:24:23:	Input page: fault type added
+2020-02-21.03:24:23:	Input page: fault description added
+2020-02-21.03:24:23:	Input page: processname added
+2020-02-21.03:24:23:	Input page: process effect added
+2020-02-21.03:24:23:	Input page: attendeename added
+2020-02-21.03:24:23:	Input page: remarks added
+2020-02-21.03:24:23:	Input page: responsibility added
+2020-02-21.03:24:23:	Input page: id added
+2020-02-21.03:24:23:	Input page: date added
+2020-02-21.03:24:23:	Input page: equipment added
+2020-02-21.03:24:23:	Input page: no run reason added
+2020-02-21.03:24:23:	Input page: time descripton added
+2020-02-21.03:24:23:	Input page: fault type added
+2020-02-21.03:24:23:	Input page: fault description added
+2020-02-21.03:24:23:	Input page: processname added
+2020-02-21.03:24:23:	Input page: process effect added
+2020-02-21.03:24:23:	Input page: attendeename added
+2020-02-21.03:24:23:	Input page: remarks added
+2020-02-21.03:24:23:	Input page: responsibility added
+2020-02-21.03:24:23:	Input page: id added
+2020-02-21.03:24:23:	Input page: date added
+2020-02-21.03:24:23:	Input page: equipment added
+2020-02-21.03:24:23:	Input page: no run reason added
+2020-02-21.03:24:23:	Input page: time descripton added
+2020-02-21.03:24:23:	Input page: fault type added
+2020-02-21.03:24:23:	Input page: fault description added
+2020-02-21.03:24:23:	Input page: processname added
+2020-02-21.03:24:23:	Input page: process effect added
+2020-02-21.03:24:23:	Input page: attendeename added
+2020-02-21.03:24:23:	Input page: remarks added
+2020-02-21.03:24:23:	Input page: responsibility added
+2020-02-21.03:24:23:	Input page: id added
+2020-02-21.03:24:23:	Input page: date added
+2020-02-21.03:24:23:	Input page: equipment added
+2020-02-21.03:24:23:	Input page: no run reason added
+2020-02-21.03:24:23:	Input page: time descripton added
+2020-02-21.03:24:23:	Input page: fault type added
+2020-02-21.03:24:23:	Input page: fault description added
+2020-02-21.03:24:23:	Input page: processname added
+2020-02-21.03:24:23:	Input page: process effect added
+2020-02-21.03:24:23:	Input page: attendeename added
+2020-02-21.03:24:23:	Input page: remarks added
+2020-02-21.03:24:23:	Input page: responsibility added
+2020-02-21.03:24:23:	Input page: id added
+2020-02-21.03:24:23:	Input page: date added
+2020-02-21.03:24:23:	Input page: equipment added
+2020-02-21.03:24:23:	Input page: no run reason added
+2020-02-21.03:24:23:	Input page: time descripton added
+2020-02-21.03:24:23:	Input page: fault type added
+2020-02-21.03:24:23:	Input page: fault description added
+2020-02-21.03:24:23:	Input page: processname added
+2020-02-21.03:24:23:	Input page: process effect added
+2020-02-21.03:24:23:	Input page: attendeename added
+2020-02-21.03:24:23:	Input page: remarks added
+2020-02-21.03:24:23:	Input page: responsibility added
+2020-02-21.03:24:23:	Input page: for loop completed filling
+2020-02-21.03:25:15:	Input page: getting data model data
+2020-02-21.03:25:15:	Input page: got all data list
+2020-02-21.03:25:15:	Input page: started for loop for 5 entries
+2020-02-21.03:25:15:	Input page: id added
+2020-02-21.03:25:15:	Input page: date added
+2020-02-21.03:25:15:	Input page: equipment added
+2020-02-21.03:25:15:	Input page: no run reason added
+2020-02-21.03:25:15:	Input page: time descripton added
+2020-02-21.03:25:15:	Input page: fault type added
+2020-02-21.03:25:1

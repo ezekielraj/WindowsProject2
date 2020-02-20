@@ -9,6 +9,7 @@ private:
 public:
     static bool Authenticated;
     static bool UserAuthenticated;
+    static std::string UserEmployeeid;
     loginpage(HWND&);
     void CreatePage();
     void HandleEvent(WPARAM , LPARAM );
