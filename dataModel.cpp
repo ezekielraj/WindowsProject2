@@ -215,7 +215,7 @@ std::vector<dataobject> dataModel::getalldatas() {
             
             CDateTime cus;
             dao.starttime = cus.getcdatetime(stt);
-            dao.starttime = cus.getcdatetime(spt);
+            dao.stoptime = cus.getcdatetime(spt);
 
             
             std::string s = res->getString("timedesc");
@@ -286,7 +286,7 @@ std::vector<dataobject> dataModel::getspecificdata(std::string eqt, std::string 
 
             CDateTime cus;
             dao.starttime = cus.getcdatetime(stt);
-            dao.starttime = cus.getcdatetime(spt);
+            dao.stoptime = cus.getcdatetime(spt);
 
             std::string s = res->getString("timedesc");
             std::string delimiter = ":";
@@ -351,7 +351,7 @@ std::vector<dataobject> dataModel::getalldata() {
 
             CDateTime cus;
             dao.starttime = cus.getcdatetime(stt);
-            dao.starttime = cus.getcdatetime(spt);
+            dao.stoptime = cus.getcdatetime(spt);
 
             std::string s = res->getString("timedesc");
             std::string delimiter = ":";

@@ -19,6 +19,7 @@ public:
     friend int countLeapYears(CDateTime&);
     friend int getDifference(CDateTime&, CDateTime&);
     CDateTime getcdatetime(std::string&);
+    std::string getinpformat();
 //    CDateTime operator=(const CDateTime&);
 };
 

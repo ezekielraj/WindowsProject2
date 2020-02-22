@@ -126,3 +126,13 @@ CDateTime CDateTime::getcdatetime(std::string &dt) {
         cdd.hour = cd.hour;
         return cdd;
 }*/
+
+std::string CDateTime::getinpformat() {
+    return std::to_string(month)+"/"+ \
+        std::to_string(day)+"/"+ \
+        std::to_string(year) + " " + \
+        std::to_string(hour) + ":" + \
+        std::to_string(minute) + ":" + \
+        std::to_string(second);
+
+}

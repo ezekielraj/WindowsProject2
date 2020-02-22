@@ -205,11 +205,16 @@ void inputpage::CreatePage() {
             WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP,
 
             450, 114, 150, 30, iphwnd, NULL, NULL, NULL);
+        std::string dateFormat = "M'/'d'/'yyyy";
+        DateTime_SetFormat(pageentries[10],std::wstring(dateFormat.begin(), dateFormat.end()).c_str());
+
         pageentries[11] = CreateWindowW(L"SysDateTimePick32", NULL,
 
             WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP | DTS_TIMEFORMAT,
 
             450, 148, 150, 30, iphwnd, NULL, NULL, NULL);
+        std::string timeFormat = "h':'mm':'dd' 'tt";
+        DateTime_SetFormat(pageentries[11], std::wstring(timeFormat.begin(), timeFormat.end()).c_str());
 
         pageentries[12] = CreateWindowA("STATIC",
             " Delay or DownTime\n Stop Date Time",
@@ -225,12 +230,13 @@ void inputpage::CreatePage() {
             WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP,
 
             450, 220, 150, 30, iphwnd, NULL, NULL, NULL);
+        DateTime_SetFormat(pageentries[13], std::wstring(dateFormat.begin(), dateFormat.end()).c_str());
         pageentries[14] = CreateWindowW(L"SysDateTimePick32", NULL,
 
             WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP | DTS_TIMEFORMAT,
 
             450, 254, 150, 30, iphwnd, NULL, NULL, NULL);
-
+        DateTime_SetFormat(pageentries[14], std::wstring(timeFormat.begin(), timeFormat.end()).c_str());
 
         pageentries[15] = CreateWindowA("STATIC",
             "Description (fault/mainenance)",

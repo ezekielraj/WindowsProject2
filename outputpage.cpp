@@ -185,13 +185,19 @@ void outputpage::HandleEvent(WPARAM wParam, LPARAM lParam){
             //}
                 //int height = 110;
             std::vector<dataobject> cdatalist = dm.getspecificdata(strequipnt, completedate);
-            
+            datalist.clear();
+
             for (auto itr = cdatalist.begin(); itr != cdatalist.end(); ++itr) {
                 datalist.push_back(*itr);
             }
 
             dm.closeConnection();
             ctp = 0;
+            auto vi = pageentries.begin();
+            vi = vi + 7;
+            for (; vi != pageentries.end(); ++vi) {
+                DestroyWindow(*vi);
+            }
                 filltenentries(ctp);
         }
         break;
@@ -267,12 +273,14 @@ void outputpage::HandleEvent(WPARAM wParam, LPARAM lParam){
                 worksheet_write_string(worksheet, a, 5, "No Run Reason", bold);
                 worksheet_write_string(worksheet, a, 6, "Delay/Downtime", bold);
                 worksheet_write_string(worksheet, a, 7, "Delay/Downtime Duration", bold);
-                worksheet_write_string(worksheet, a, 8, "Fault Type", bold);
-                worksheet_write_string(worksheet, a, 9, "Fault Description", bold);
-                worksheet_write_string(worksheet, a, 10, "Effect on Process", bold);
-                worksheet_write_string(worksheet, a, 11, "Responsibility", bold);
-                worksheet_write_string(worksheet, a, 12, "Employee", bold);
-                worksheet_write_string(worksheet, a, 13, "Corrective Action Taken", bold);
+                worksheet_write_string(worksheet, a, 8, "Start Date/Time", bold);
+                worksheet_write_string(worksheet, a, 9, "Stop Date/Time", bold);
+                worksheet_write_string(worksheet, a, 10, "Fault Type", bold);
+                worksheet_write_string(worksheet, a, 11, "Fault Description", bold);
+                worksheet_write_string(worksheet, a, 12, "Effect on Process", bold);
+                worksheet_write_string(worksheet, a, 13, "Responsibility", bold);
+                worksheet_write_string(worksheet, a, 14, "Employee", bold);
+                worksheet_write_string(worksheet, a, 15, "Corrective Action Taken", bold);
 
 
                 dataModel dm;
@@ -289,12 +297,14 @@ void outputpage::HandleEvent(WPARAM wParam, LPARAM lParam){
                     worksheet_write_string(worksheet, i, 5, (it->norunreason).c_str(), normalcell);
                     worksheet_write_string(worksheet, i, 6, (it->timedesc).c_str(), normalcell);
                     worksheet_write_string(worksheet, i, 7, (it->timedeschh + ":" + it->timedescmm + ":" + it->timedescss).c_str(), normalcell);
-                    worksheet_write_string(worksheet, i, 8, (it->faulttype).c_str(), normalcell);
-                    worksheet_write_string(worksheet, i, 9, (it->faultdesc).c_str(), normalcell);
-                    worksheet_write_string(worksheet, i, 10, (it->processeffect).c_str(), normalcell);
-                    worksheet_write_string(worksheet, i, 11, (it->responsibility).c_str(), normalcell);
-                    worksheet_write_string(worksheet, i, 12, (it->attendeename).c_str(), normalcell);
-                    worksheet_write_string(worksheet, i, 13, (it->remarks).c_str(), normalcell);
+                    worksheet_write_string(worksheet, i, 8, (it->starttime.getinpformat()).c_str(), normalcell);
+                    worksheet_write_string(worksheet, i, 9, (it->stoptime.getinpformat()).c_str(), normalcell);
+                    worksheet_write_string(worksheet, i, 10, (it->faulttype).c_str(), normalcell);
+                    worksheet_write_string(worksheet, i, 11, (it->faultdesc).c_str(), normalcell);
+                    worksheet_write_string(worksheet, i, 12, (it->processeffect).c_str(), normalcell);
+                    worksheet_write_string(worksheet, i, 13, (it->responsibility).c_str(), normalcell);
+                    worksheet_write_string(worksheet, i, 14, (it->attendeename).c_str(), normalcell);
+                    worksheet_write_string(worksheet, i, 15, (it->remarks).c_str(), normalcell);
                     i++;
                 }
 
