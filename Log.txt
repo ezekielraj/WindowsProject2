@@ -2763,4 +2763,80 @@
 2020-02-21.03:25:15:	Input page: no run reason added
 2020-02-21.03:25:15:	Input page: time descripton added
 2020-02-21.03:25:15:	Input page: fault type added
-2020-02-21.03:25:1
+2020-02-21.03:25:12020-02-22.13:13:21:	Input menu cclicked and in switch case of ip
+2020-02-22.13:13:21:	previous page destroyed in the page objecct
+2020-02-22.13:13:21:	input page ctor class is created
+2020-02-22.13:13:21:	Input page: CreatePage() starting
+2020-02-22.13:13:21:	Input page: Added All the Page entries
+2020-02-22.13:13:21:	Input page:  - got equipment list
+2020-02-22.13:13:21:	Input page: filled combobox 3 with equipment list
+2020-02-22.13:13:21:	Input page: filled no run reason in combobox 6
+2020-02-22.13:13:21:	Input page: filled time description
+2020-02-22.13:13:21:	Input page: got fault model data from db
+2020-02-22.13:13:21:	Input page: filled fault model combo box
+2020-02-22.13:13:21:	Input page: got process model data from db
+2020-02-22.13:13:21:	Input page: filled pm in combo box 18
+2020-02-22.13:13:21:	Input page: got employee model from db
+2020-02-22.13:13:21:	Input page: filled employee mode data in cb
+2020-02-22.13:13:21:	Input page: got responsibility model
+2020-02-22.13:13:21:	Input page: filled resp model
+2020-02-22.13:13:21:	Input page: starting to fill recent entries
+2020-02-22.13:13:21:	Input page: getting data model data
+2020-02-22.13:13:21:	Input page: got all data list
+2020-02-22.13:13:21:	Input page: started for loop for 5 entries
+2020-02-22.13:13:21:	Input page: id added
+2020-02-22.13:13:21:	Input page: date added
+2020-02-22.13:13:21:	Input page: equipment added
+2020-02-22.13:13:21:	Input page: no run reason added
+2020-02-22.13:13:21:	Input page: time descripton added
+2020-02-22.13:13:21:	Input page: fault type added
+2020-02-22.13:13:21:	Input page: fault description added
+2020-02-22.13:13:21:	Input page: processname added
+2020-02-22.13:13:21:	Input page: process effect added
+2020-02-22.13:13:21:	Input page: attendeename added
+2020-02-22.13:13:21:	Input page: remarks added
+2020-02-22.13:13:21:	Input page: responsibility added
+2020-02-22.13:13:21:	Input page: id added
+2020-02-22.13:13:21:	Input page: date added
+2020-02-22.13:13:21:	Input page: equipment added
+2020-02-22.13:13:21:	Input page: no run reason added
+2020-02-22.13:13:21:	Input page: time descripton added
+2020-02-22.13:13:21:	Input page: fault type added
+2020-02-22.13:13:21:	Input page: fault description added
+2020-02-22.13:13:21:	Input page: processname added
+2020-02-22.13:13:21:	Input page: process effect added
+2020-02-22.13:13:21:	Input page: attendeename added
+2020-02-22.13:13:21:	Input page: remarks added
+2020-02-22.13:13:21:	Input page: responsibility added
+2020-02-22.13:13:21:	Input page: id added
+2020-02-22.13:13:21:	Input page: date added
+2020-02-22.13:13:21:	Input page: equipment added
+2020-02-22.13:13:21:	Input page: no run reason added
+2020-02-22.13:13:21:	Input page: time descripton added
+2020-02-22.13:13:21:	Input page: fault type added
+2020-02-22.13:13:21:	Input page: fault description added
+2020-02-22.13:13:21:	Input page: processname added
+2020-02-22.13:13:21:	Input page: process effect added
+2020-02-22.13:13:21:	Input page: attendeename added
+2020-02-22.13:13:21:	Input page: remarks added
+2020-02-22.13:13:21:	Input page: responsibility added
+2020-02-22.13:13:21:	Input page: id added
+2020-02-22.13:13:21:	Input page: date added
+2020-02-22.13:13:22:	Input page: equipment added
+2020-02-22.13:13:22:	Input page: no run reason added
+2020-02-22.13:13:22:	Input page: time descripton added
+2020-02-22.13:13:22:	Input page: fault type added
+2020-02-22.13:13:22:	Input page: fault description added
+2020-02-22.13:13:22:	Input page: processname added
+2020-02-22.13:13:22:	Input page: process effect added
+2020-02-22.13:13:22:	Input page: attendeename added
+2020-02-22.13:13:22:	Input page: remarks added
+2020-02-22.13:13:22:	Input page: responsibility added
+2020-02-22.13:13:22:	Input page: id added
+2020-02-22.13:13:22:	Input page: date added
+2020-02-22.13:13:22:	Input page: equipment added
+2020-02-22.13:13:22:	Input page: no run reason added
+2020-02-22.13:13:22:	Input page: time descripton added
+2020-02-22.13:13:22:	Input page: fault type added
+2020-02-22.13:13:22:	Input page: fault description added
+2020-02-22.13:13:22:	Input page: processname 
