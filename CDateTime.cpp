@@ -115,3 +115,14 @@ CDateTime CDateTime::getcdatetime(std::string &dt) {
     return cdt;
 
 }
+
+/*CDateTime CDateTime::operator=(const CDateTime &cd) {
+    CDateTime cdd;
+    cdd.year = cd.year;
+    cdd.month = cd.month;
+        cdd.day = cd.day;
+        cdd.minute = cd.minute;
+        cdd.second = cd.second;
+        cdd.hour = cd.hour;
+        return cdd;
+}*/

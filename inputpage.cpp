@@ -846,7 +846,12 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
                            //MessageBox(iphwnd, tdhoval, L"", MB_OK);
                 }
 
-                dao.starttime = sttime;
+                dao.starttime.year = sttime.year;
+                dao.starttime.month = sttime.month;
+                dao.starttime.day = sttime.day;
+                dao.starttime.hour = sttime.hour;
+                dao.starttime.minute = sttime.minute;
+                dao.starttime.second = sttime.second;
 
                 CDateTime sptime;
                 
@@ -932,7 +937,13 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
                     //MessageBox(iphwnd, tdhoval, L"", MB_OK);
                 }
                 }
-                dao.stoptime = sptime;
+//                dao.stoptime = sptime;
+                dao.stoptime.year = sptime.year;
+                dao.stoptime.month = sptime.month;
+                dao.stoptime.day = sptime.day;
+                dao.stoptime.hour = sptime.hour;
+                dao.stoptime.minute = sptime.minute;
+                dao.stoptime.second = sptime.second;
                 /*
                 int tdmmlen = GetWindowTextLengthW(pageentries[12]) + 1;
                 if (tdmmlen > 1) {
@@ -1043,8 +1054,12 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
                     }
 
                     if (dm.updatedata(dao)) {
-                        SetWindowTextA(pageentries[29], "Updated successfully!!!");
+                        inputpage::EditMode = false;
+                        SendMessage(iphwnd, WM_COMMAND, MAKEWPARAM(SUBMITCLEAR, BN_CLICKED),
+                            (LPARAM)iphwnd);
 
+                        SetWindowTextA(pageentries[29], "Updated successfully!!!");
+                
                         auto vi = pageentries.begin();
                         vi = vi + 37;
                         for (; vi != pageentries.end(); ++vi) {
@@ -1053,14 +1068,15 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
                         fillallDataentries();
                     }
                     else {
+                        inputpage::EditMode = false;
+                        SendMessage(iphwnd, WM_COMMAND, MAKEWPARAM(SUBMITCLEAR, BN_CLICKED),
+                            (LPARAM)iphwnd);
+
                         SetWindowTextA(pageentries[29], "Some issue updating!!!");
                     }
 
 
 
-                    inputpage::EditMode = false;
-                    SendMessage(iphwnd, WM_COMMAND, MAKEWPARAM(SUBMITCLEAR, BN_CLICKED),
-                        (LPARAM)iphwnd);
 
                 }
                 else {
@@ -1195,16 +1211,27 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
 //                SetWindowText(pageentries[10], std::wstring(stdate.begin(), stdate.end()).c_str());
                 //OutputDebugString(std::wstring(stdate.begin(), stdate.end()).c_str());
                 SYSTEMTIME st;
+                ZeroMemory(&st, sizeof(SYSTEMTIME));
                 st.wDay = dobj.starttime.day;
                 st.wMonth = dobj.starttime.month;
                 st.wYear = dobj.starttime.year;
                 st.wHour = dobj.starttime.hour;
                 st.wMinute = dobj.starttime.minute;
                 st.wSecond = dobj.starttime.second;
-                SendMessage(pageentries[10], DTM_SETSYSTEMTIME, (WPARAM)GDT_VALID, (LPARAM)&st);
-                SendMessage(pageentries[11], DTM_SETSYSTEMTIME, (WPARAM)GDT_VALID, (LPARAM)&st);
+                SendMessageW(pageentries[11], DTM_SETSYSTEMTIME, (WPARAM)GDT_VALID, (LPARAM)&st);
+                SendMessageW(pageentries[10], MCM_SETCURSEL, 0, (LPARAM)&st);
 
-                SetWindowText(pageentries[10], std::wstring(stdate.begin(), stdate.end()).c_str());
+                SYSTEMTIME sp;
+                ZeroMemory(&sp, sizeof(SYSTEMTIME));
+                sp.wDay = dobj.stoptime.day;
+                sp.wMonth = dobj.stoptime.month;
+                sp.wYear = dobj.stoptime.year;
+                sp.wHour = dobj.stoptime.hour;
+                sp.wMinute = dobj.stoptime.minute;
+                sp.wSecond = dobj.stoptime.second;
+                SendMessageW(pageentries[14], DTM_SETSYSTEMTIME, (WPARAM)GDT_VALID, (LPARAM)&sp);
+                SendMessageW(pageentries[13], MCM_SETCURSEL, 0, (LPARAM)&sp);
+
 
                 SetWindowText(pageentries[16], std::wstring(dobj.faultdesc.begin(), dobj.faultdesc.end()).c_str());
 
