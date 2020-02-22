@@ -1071,8 +1071,12 @@ void inputpage::HandleEvent(WPARAM wParam, LPARAM lParam) {
                         inputpage::EditMode = false;
                         SendMessage(iphwnd, WM_COMMAND, MAKEWPARAM(SUBMITCLEAR, BN_CLICKED),
                             (LPARAM)iphwnd);
-
+                        if (dm.oldData) {
+                            SetWindowTextA(pageentries[29], "Cant Edit !!!24hours old data!!! ");
+                            dm.oldData = true;
+                        }else{
                         SetWindowTextA(pageentries[29], "Some issue updating!!!");
+                        }
                     }
 
 

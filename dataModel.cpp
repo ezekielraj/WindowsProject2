@@ -47,6 +47,7 @@ dataModel::dataModel() {
 
     }
     closeConnection();
+    oldData = false;
 }
 
 bool dataModel::insertdata(dataobject &dm) {
@@ -161,6 +162,7 @@ bool dataModel::updatedata(dataobject &dm) {
 
         }
         else {
+            oldData = true;
             return false;
         }
 

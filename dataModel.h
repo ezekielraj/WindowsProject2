@@ -47,6 +47,9 @@ class dataModel :
         dataModel();
         bool insertdata(dataobject&);
         bool updatedata(dataobject&);
+
+        bool oldData;
+
         std::vector<dataobject> getalldatas();
 
         std::vector<dataobject> getalldata();
