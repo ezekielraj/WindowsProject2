@@ -18,6 +18,7 @@
 #include "inputpage.h"
 #include "outputpage.h"
 #include "dbbackuppage.h"
+#include "apuserlog.h"
 #include "Logger.h"
 #define MAX_LOADSTRING 100
 
@@ -30,6 +31,7 @@
 #define IDM_AP_LOGOUT 6006
 #define IDM_AP_ADMINCTRL 6007
 #define IDM_AP_DBBACKUP 6008
+#define IDM_AP_LOGGED 6009
 
 // Global Variables:
 HINSTANCE hInst;                                // current instance
@@ -257,6 +259,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                     hMenu1 = CreateMenu();
                     AppendMenuW(hMenu1, MF_STRING, IDM_AP_ADMINCTRL, L"&Admin Updates");
                     AppendMenuW(hMenu1, MF_STRING, IDM_AP_DBBACKUP, L"&DB Backup");
+                    AppendMenuW(hMenu1, MF_STRING, IDM_AP_LOGGED, L"&User Log");
                     AppendMenuW(hMenu1, MF_STRING, IDM_AP_LOGOUT, L"&Logout");
                     ModifyMenuW(hMenubar, 1, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hMenu1, L"&AdminPage");
                     SetMenu(hWnd,hMenubar); 
@@ -270,6 +273,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 p->DestroyPage();
                 if (loginpage::Authenticated) {
                     p = new dbbackuppage(hWnd);
+                }
+                else {
+                    p = new loginpage(hWnd);
+                }
+                p->CreatePage();
+                break;
+            case IDM_AP_LOGGED:
+                p->DestroyPage();
+                if (loginpage::Authenticated) {
+                    p = new apuserlog(hWnd);
                 }
                 else {
                     p = new loginpage(hWnd);

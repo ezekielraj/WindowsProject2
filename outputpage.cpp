@@ -14,16 +14,17 @@
 #define GENCSV 800
 #define OCMBOX1 801
 #define GETDATA 802
+#define SHOWPREV 803
+#define SHOWNEXT 804
 
 outputpage::outputpage(HWND &hwnd) : pages(30) {
     ophwnd = hwnd;
-
+    ctp = 0;
 }
 void outputpage::CreatePage() {
 
     
-     pageentries.push_back(
-         CreateWindowA(
+     pageentries[0] = CreateWindowA(
              "BUTTON",  // Predefined class; Unicode assumed
              "Generate OverAll Excel",      // Button text
              WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles
@@ -34,8 +35,8 @@ void outputpage::CreatePage() {
              ophwnd,     // Parent window
              (HMENU)GENCSV,       // No menu.
              (HINSTANCE)GetWindowLong(ophwnd, GWLP_HINSTANCE),
-             NULL)
-     );
+             NULL);
+     
 
      pageentries[2] = CreateWindowA("ComboBox", "",
          CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE | WS_VSCROLL | CBS_AUTOHSCROLL |
@@ -61,7 +62,30 @@ void outputpage::CreatePage() {
              (HMENU)GETDATA,       // No menu.
              (HINSTANCE)GetWindowLong(ophwnd, GWLP_HINSTANCE),
              NULL);
-
+     pageentries[5] = CreateWindowA(
+         "BUTTON",  // Predefined class; Unicode assumed
+         "Prev",      // Button text
+         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles
+         760,         // x position
+         75,         // y position
+         100,        // Button width
+         30,        // Button height
+         ophwnd,     // Parent window
+         (HMENU)SHOWPREV,       // No menu.
+         (HINSTANCE)GetWindowLong(ophwnd, GWLP_HINSTANCE),
+         NULL);
+     pageentries[6] = CreateWindowA(
+         "BUTTON",  // Predefined class; Unicode assumed
+         "Next",      // Button text
+         WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles
+         865,         // x position
+         75,         // y position
+         100,        // Button width
+         30,        // Button height
+         ophwnd,     // Parent window
+         (HMENU)SHOWNEXT,       // No menu.
+         (HINSTANCE)GetWindowLong(ophwnd, GWLP_HINSTANCE),
+         NULL);
      equipModel em;
      em.OpenConnection();
      std::vector<std::string> equiplist = em.getallequipnt();
@@ -92,6 +116,39 @@ void outputpage::CreatePage() {
 void outputpage::HandleEvent(WPARAM wParam, LPARAM lParam){ 
     switch (LOWORD(wParam))
     {
+        case SHOWNEXT:
+        {
+            
+            ctp = ctp+10;
+            if (datalist.size() > ctp) {
+                auto vi = pageentries.begin();
+                vi = vi + 7;
+                for (; vi != pageentries.end(); ++vi) {
+                    DestroyWindow(*vi);
+                }
+                filltenentries(ctp);
+            }
+            else {
+                ctp = ctp-10;
+            }
+        }
+        break;
+        case SHOWPREV:
+        {
+            ctp = ctp - 10;
+            if (ctp >=0 ) {
+                auto vi = pageentries.begin();
+                vi = vi + 7;
+                for (; vi != pageentries.end(); ++vi) {
+                    DestroyWindow(*vi);
+                }
+                filltenentries(ctp);
+            }
+            else {
+                ctp = ctp + 10;
+            }
+        }
+        break;
         case GETDATA:
         {
             dataModel dm;
@@ -126,104 +183,16 @@ void outputpage::HandleEvent(WPARAM wParam, LPARAM lParam){
 
                 std::string completedate = year + "-" + month + "-" + day;
             //}
-                int height = 110;
-            std::vector<dataobject> datalist = dm.getspecificdata(strequipnt, completedate);
-            for (auto it = datalist.begin(); it != datalist.end(); ++it) {
+                //int height = 110;
+            std::vector<dataobject> cdatalist = dm.getspecificdata(strequipnt, completedate);
             
-                pageentries.push_back(CreateWindowA("STATIC",
-                    (LPCSTR)std::to_string(it->id).c_str(),
-                    WS_VISIBLE | WS_CHILD,
-                    40, height, 20, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                pageentries.push_back(CreateWindowA("STATIC",
-                    (LPCSTR)(it->date).c_str(),
-                    WS_VISIBLE | WS_CHILD,
-                    65, height, 75, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                pageentries.push_back(CreateWindowA("STATIC",
-                    (LPCSTR)(it->equipnt).c_str(),
-                    WS_VISIBLE | WS_CHILD,
-                    145, height, 75, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                pageentries.push_back(CreateWindowA("STATIC",
-                    (LPCSTR)(it->norunreason).c_str(),
-                    WS_VISIBLE | WS_CHILD,
-                    225, height, 75, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                std::string timedescnew = it->timedesc + " | " + it->timedeschh + ":" + it->timedescmm + ":" + it->timedescss;
-                pageentries.push_back(CreateWindowA("STATIC",
-                    (LPCSTR)(timedescnew).c_str(),
-                    WS_VISIBLE | WS_CHILD,
-                    305, height, 150, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                pageentries.push_back(CreateWindowA("STATIC",
-                    (LPCSTR)(it->faulttype).c_str(),
-                    WS_VISIBLE | WS_CHILD,
-                    460, height, 100, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                pageentries.push_back(CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"),
-                    std::wstring(it->faultdesc.begin(), it->faultdesc.end()).c_str(),
-                    WS_CHILD | WS_VISIBLE | WS_VSCROLL |
-                    ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
-                    565, height, 150, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                pageentries.push_back(CreateWindowA("STATIC",
-                    (LPCSTR)(it->processname).c_str(),
-                    WS_VISIBLE | WS_CHILD,
-                    720, height, 75, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                pageentries.push_back(CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"),
-                    std::wstring(it->processeffect.begin(), it->processeffect.end()).c_str(),
-                    WS_CHILD | WS_VISIBLE | WS_VSCROLL |
-                    ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
-                    800, height, 150, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                pageentries.push_back(CreateWindowA("STATIC",
-                    (LPCSTR)(it->attendeename).c_str(),
-                    WS_VISIBLE | WS_CHILD,
-                    955, height, 75, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                pageentries.push_back(
-                    CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), std::wstring(it->remarks.begin(), it->remarks.end()).c_str(),
-                        WS_CHILD | WS_VISIBLE | WS_VSCROLL |
-                        ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
-                        1035, height, 150, 60,
-                        ophwnd,
-                        NULL, NULL, NULL
-                    ));
-                pageentries.push_back(CreateWindowA("STATIC",
-                    (LPCSTR)(it->responsibility).c_str(),
-                    WS_VISIBLE | WS_CHILD,
-                    1190, height, 100, 60,
-                    ophwnd,
-                    NULL, NULL, NULL
-                ));
-                height = height + 65;
-
+            for (auto itr = cdatalist.begin(); itr != cdatalist.end(); ++itr) {
+                datalist.push_back(*itr);
             }
 
-
             dm.closeConnection();
+            ctp = 0;
+                filltenentries(ctp);
         }
         break;
         case OCMBOX1:
@@ -542,3 +511,104 @@ outputpage::~outputpage() {
     DestroyPage();
 }
 
+void outputpage::filltenentries(int ctp) {
+    int height = 110;
+    auto it= datalist.begin();
+    it = it+ctp;
+    int i = 0;
+//    for (auto it = datalist.begin(); it != datalist.end(); ++it) {
+    while(it!=datalist.end() && i < 10){
+        
+        pageentries.push_back(CreateWindowA("STATIC",
+            (LPCSTR)std::to_string(it->id).c_str(),
+            WS_VISIBLE | WS_CHILD,
+            40, height, 20, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        pageentries.push_back(CreateWindowA("STATIC",
+            (LPCSTR)(it->date).c_str(),
+            WS_VISIBLE | WS_CHILD,
+            65, height, 75, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        pageentries.push_back(CreateWindowA("STATIC",
+            (LPCSTR)(it->equipnt).c_str(),
+            WS_VISIBLE | WS_CHILD,
+            145, height, 75, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        pageentries.push_back(CreateWindowA("STATIC",
+            (LPCSTR)(it->norunreason).c_str(),
+            WS_VISIBLE | WS_CHILD,
+            225, height, 75, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        std::string timedescnew = it->timedesc + " | " + it->timedeschh + ":" + it->timedescmm + ":" + it->timedescss;
+        pageentries.push_back(CreateWindowA("STATIC",
+            (LPCSTR)(timedescnew).c_str(),
+            WS_VISIBLE | WS_CHILD,
+            305, height, 150, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        pageentries.push_back(CreateWindowA("STATIC",
+            (LPCSTR)(it->faulttype).c_str(),
+            WS_VISIBLE | WS_CHILD,
+            460, height, 100, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        pageentries.push_back(CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"),
+            std::wstring(it->faultdesc.begin(), it->faultdesc.end()).c_str(),
+            WS_CHILD | WS_VISIBLE | WS_VSCROLL |
+            ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
+            565, height, 150, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        pageentries.push_back(CreateWindowA("STATIC",
+            (LPCSTR)(it->processname).c_str(),
+            WS_VISIBLE | WS_CHILD,
+            720, height, 75, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        pageentries.push_back(CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"),
+            std::wstring(it->processeffect.begin(), it->processeffect.end()).c_str(),
+            WS_CHILD | WS_VISIBLE | WS_VSCROLL |
+            ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
+            800, height, 150, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        pageentries.push_back(CreateWindowA("STATIC",
+            (LPCSTR)(it->attendeename).c_str(),
+            WS_VISIBLE | WS_CHILD,
+            955, height, 75, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        pageentries.push_back(
+            CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), std::wstring(it->remarks.begin(), it->remarks.end()).c_str(),
+                WS_CHILD | WS_VISIBLE | WS_VSCROLL |
+                ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
+                1035, height, 150, 60,
+                ophwnd,
+                NULL, NULL, NULL
+            ));
+        pageentries.push_back(CreateWindowA("STATIC",
+            (LPCSTR)(it->responsibility).c_str(),
+            WS_VISIBLE | WS_CHILD,
+            1190, height, 100, 60,
+            ophwnd,
+            NULL, NULL, NULL
+        ));
+        height = height + 65;
+        it++;
+        i++;
+    }
+}

@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="adminpage.h" />
+    <ClInclude Include="apuserlog.h" />
     <ClInclude Include="Base64.h" />
     <ClInclude Include="CDateTime.h" />
     <ClInclude Include="dataModel.h" />
@@ -178,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="adminpage.cpp" />
+    <ClCompile Include="apuserlog.cpp" />
     <ClCompile Include="Base64.cpp" />
     <ClCompile Include="CDateTime.cpp" />
     <ClCompile Include="dataModel.cpp" />

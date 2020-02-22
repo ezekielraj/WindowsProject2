@@ -81,7 +81,7 @@ empobjects employeeModel::getoneEmployee(std::string &id) {
     try {
         empobjects empobj;
         stmt = con->createStatement();
-        res = stmt->executeQuery("SELECT * FROM " + tablename + " where id = '"+id+"'");
+        res = stmt->executeQuery("SELECT * FROM " + tablename + " where id = '"+id+"' or employeenum = '"+id+"' or employeename = '"+id+"'");
         if (res->next()) {
             empobj.id = res->getInt("id");
             empobj.empnum = res->getString("employeenum");

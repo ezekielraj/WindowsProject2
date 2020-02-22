@@ -517,3 +517,19 @@ bool dataModel::deletedata(std::string &dataid) {
 
     }
 }
+
+std::vector<std::string> dataModel::getUserDetails(std::string cdate) {
+    try {
+        std::vector<std::string> ud;
+        stmt = con->createStatement();
+        res = stmt->executeQuery("select distinct created_by from maindata_new2 where created_at like '%"+cdate+"%';");
+        while (res->next()) {
+
+            ud.push_back(res->getString("created_by"));
+        }
+        return ud;
+    }
+    catch (sql::SQLException &e) {
+
+    }
+}
