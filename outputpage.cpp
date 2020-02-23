@@ -445,7 +445,7 @@ void outputpage::HandleEvent(WPARAM wParam, LPARAM lParam){
                 chart_axis_set_name(chart->y_axis, "Hours");
 
                 /* Set an Excel chart style. */
-                chart_set_style(chart, 11);
+                chart_set_style(chart, 12);
 
                 /* Insert the chart into the worksheet. */
                 worksheet_insert_chart(worksheet1, CELL("B2"), chart);
