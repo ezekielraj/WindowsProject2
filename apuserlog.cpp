@@ -2,6 +2,10 @@
 #include "dataModel.h"
 #include "employeeModel.h"
 
+#include <commctrl.h>
+#include <richedit.h>
+
+
 #include <sstream>
 #include <iomanip>
 
@@ -22,6 +26,8 @@ void apuserlog::CreatePage() {
         WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP,
 
         50, 75, 150, 30, ulhwnd, NULL, NULL, NULL);
+    std::string dateFormat = "M'/'d'/'yyyy";
+    DateTime_SetFormat(pageentries[0], std::wstring(dateFormat.begin(), dateFormat.end()).c_str());
 
     pageentries[1] = CreateWindowA(
         "BUTTON",  // Predefined class; Unicode assumed

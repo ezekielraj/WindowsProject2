@@ -10,6 +10,10 @@
 #include <string>
 #include <atlstr.h>
 
+#include <commctrl.h>
+#include <richedit.h>
+
+
 
 #define GENCSV 800
 #define OCMBOX1 801
@@ -49,6 +53,9 @@ void outputpage::CreatePage() {
          WS_BORDER | WS_VISIBLE | WS_CHILD | WS_TABSTOP,
 
          200, 75, 150, 30, ophwnd, NULL, NULL, NULL);
+     std::string dateFormat = "M'/'d'/'yyyy";
+     DateTime_SetFormat(pageentries[3], std::wstring(dateFormat.begin(), dateFormat.end()).c_str());
+
 
      pageentries[4] = CreateWindowA(
              "BUTTON",  // Predefined class; Unicode assumed
